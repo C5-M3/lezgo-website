@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lezgo: Road Trip Companion</title>
+  <meta name="description" content="Lezgo keeps a group of cars together on a road trip. The lead driver plans the route, and every car sees the same route and each other on the map.">
+  <meta name="theme-color" content="#f7ff00">
+  <meta property="og:title" content="Lezgo: Road Trip Companion">
+  <meta property="og:description" content="Plan the route once and keep every car together.">
+  <meta property="og:image" content="https://lezgo.nathansudiara.com/assets/app-icon-180.png">
+  <meta name="apple-itunes-app" content="app-id=6826083177">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/app-icon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <a href="/" aria-label="Lezgo home"><img src="/assets/lezgo-black.png" alt="Lezgo" width="857" height="210"></a>
+    <nav aria-label="Site">
+      <a href="/support">Support</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-lead">
+        <h1 id="hero-title">Keep the whole convoy together.</h1>
+      </div>
+
+      <ul class="crew" aria-hidden="true">
+        <li><img src="/assets/crew-yellow.png" alt="" width="360" height="281"></li>
+        <li><img src="/assets/crew-pink.png" alt="" width="307" height="360"></li>
+        <li><img src="/assets/crew-blue.png" alt="" width="360" height="339"></li>
+        <li><img src="/assets/crew-purple.png" alt="" width="360" height="251"></li>
+        <li><img src="/assets/crew-green.png" alt="" width="360" height="313"></li>
+      </ul>
+
+      <div class="hero-join">
+        <p>One driver leads. Everyone else joins with a 6-digit code. Every car sees the same route and each other on the map, all the way there.</p>
+        <a class="store-button" href="https://apps.apple.com/app/id6826083177">Get Lezgo on the App Store</a>
+      </div>
+    </section>
+
+    <section class="route" aria-labelledby="route-title">
+      <h2 id="route-title">How a Lezgo trip works</h2>
+
+      <ol class="stops">
+        <li class="stop">
+          <span class="flag" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h2v20H5zM8 3h12l-2.5 4.5L20 12H8z"/></svg>
+          </span>
+          <div class="copy">
+            <h3>The leader plans the route</h3>
+            <p>Pick a start point, add checkpoints for fuel or food, and set the destination. Lezgo draws the route the whole group will follow.</p>
+          </div>
+          <img class="phone" src="/assets/screen-draftTripLeader.jpg" alt="A planned route from Universitas Ciputra to Ciputra World Surabaya, with five people in the lobby" width="506" height="1100" loading="lazy">
+        </li>
+
+        <li class="stop">
+          <span class="flag" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h2v20H5zM8 3h12l-2.5 4.5L20 12H8z"/></svg>
+          </span>
+          <div class="copy">
+            <h3>Everyone joins the Trip Room</h3>
+            <p>Share the room code or an invite link. Each car joins with one phone, and the group checks the route and who is coming before setting off.</p>
+          </div>
+          <img class="phone" src="/assets/screen-tripRoomLeader.jpg" alt="The Trip Room with the route overview and participants Agus, Budi and Citra" width="506" height="1100" loading="lazy">
+        </li>
+
+        <li class="stop">
+          <span class="flag" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h2v20H5zM8 3h12l-2.5 4.5L20 12H8z"/></svg>
+          </span>
+          <div class="copy">
+            <h3>Drive with every car on the map</h3>
+            <p>Everyone follows the same turn-by-turn route and sees every car in the group. Tap a car to see its driver, street and arrival time.</p>
+          </div>
+          <img class="phone" src="/assets/screen-tripMapLeader.jpg" alt="The trip map with the next turn in 3.5 km and 12 minutes to Pakuwon Mall" width="506" height="1100" loading="lazy">
+        </li>
+
+        <li class="stop">
+          <span class="flag" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h2v20H5zM8 3h12l-2.5 4.5L20 12H8z"/></svg>
+          </span>
+          <div class="copy">
+            <h3>Nobody gets left behind</h3>
+            <p>If a car takes a wrong turn, its driver hears about it right away. If the leader changes roads, the route is recalculated for everyone.</p>
+          </div>
+          <img class="phone" src="/assets/screen-tripMapMemberOffRoute.jpg" alt="The trip map showing the alert: You're out of the way" width="506" height="1100" loading="lazy">
+        </li>
+      </ol>
+    </section>
+
+    <section class="alerts" aria-labelledby="alerts-title">
+      <h2 id="alerts-title">Alerts you hear, not read</h2>
+      <p>Drivers keep their eyes on the road. Lezgo speaks up when something changes, and one tap mutes it.</p>
+      <ul class="pills">
+        <li><span class="dot" style="background: var(--pink)"></span>You left the route</li>
+        <li><span class="dot" style="background: var(--blue)"></span>You passed a checkpoint</li>
+        <li><span class="dot" style="background: var(--purple)"></span>You are ahead of the leader</li>
+        <li><span class="dot" style="background: var(--green)"></span>The route was updated</li>
+      </ul>
+    </section>
+
+    <section class="road" aria-labelledby="road-title">
+      <h2 id="road-title">Made for the road</h2>
+      <dl>
+        <div>
+          <dt>CarPlay</dt>
+          <dd>The trip map appears on your car's screen when your iPhone is connected.</dd>
+        </div>
+        <div>
+          <dt>Lock Screen</dt>
+          <dd>A Live Activity keeps the trip and the time left on your Lock Screen.</dd>
+        </div>
+        <div>
+          <dt>Siri</dt>
+          <dd>Ask Siri about your trip while you drive.</dd>
+        </div>
+        <div>
+          <dt>No sign-up</dt>
+          <dd>Trips are shared through iCloud. There are no accounts to make and no ads.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <h2 id="closing-title">Planning a trip with friends?</h2>
+      <p>Lezgo is free for iPhone. It needs an iCloud account and location access while the trip is open.</p>
+      <a class="store-button" href="https://apps.apple.com/app/id6826083177">Get Lezgo on the App Store</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <img src="/assets/lezgo-yellow.png" alt="Lezgo" width="858" height="210">
+    <nav aria-label="Footer">
+      <a href="/support">Support</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="mailto:hello@nathansudiara.com">hello@nathansudiara.com</a>
+    </nav>
+    <span>© 2026 Nathan Sudiara</span>
+  </footer>
+</body>
+</html>

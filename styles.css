@@ -1,0 +1,354 @@
+/* Lezgo website. Colors come from the app's asset catalog (BrandYellow, BrandPink, ...). */
+:root {
+  --signal: #f7ff00;
+  --road: #000000;
+  --asphalt: #1c1c1e;
+  --kerb: #8e8e93;
+  --paper: #ffffff;
+  --pink: #ff3fa6;
+  --blue: #3d99fc;
+  --purple: #a178ff;
+  --green: #7ff19b;
+  --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --text: "Instrument Sans", -apple-system, system-ui, sans-serif;
+  --measure: 34rem;
+  --gutter: clamp(1rem, 5vw, 4rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--road);
+  color: var(--paper);
+  font-family: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; }
+
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  padding: 0.75rem 1rem;
+  background: var(--signal);
+  color: var(--road);
+  z-index: 10;
+}
+.skip:focus { left: 1rem; top: 1rem; }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem var(--gutter);
+}
+.topbar img { width: clamp(5.5rem, 14vw, 9rem); }
+.topbar nav { display: flex; gap: clamp(0.75rem, 3vw, 1.25rem); font-weight: 600; font-size: 0.95rem; }
+.topbar nav a { color: var(--road); text-decoration: none; }
+.topbar nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* ---------- Hero: the app's Home screen, LEAD over JOIN ---------- */
+
+.hero {
+  position: relative;
+  min-height: min(100svh, 56rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr auto 1fr;
+  background: linear-gradient(to bottom right, var(--signal) 0 49.9%, var(--road) 50% 100%);
+  overflow: hidden;
+}
+@media (max-width: 720px) {
+  .hero {
+    min-height: auto;
+    background: linear-gradient(168deg, var(--signal) 0 56%, var(--road) 56.1% 100%);
+  }
+}
+
+.hero-lead {
+  align-self: end;
+  padding: 6.5rem var(--gutter) 0;
+  color: var(--road);
+}
+.hero-lead h1 {
+  font-size: clamp(2.6rem, 8.4vw, 7rem);
+  max-width: 11ch;
+}
+
+.crew {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(0.25rem, 1.5vw, 1.25rem);
+  padding: 1.5rem var(--gutter);
+  list-style: none;
+  margin: 0;
+}
+.crew li { width: clamp(2.5rem, 14vw, 8.5rem); }
+.crew li:nth-child(1) { width: clamp(3.25rem, 17vw, 11rem); }
+@media (max-width: 720px) {
+  .crew { padding-bottom: 2.25rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .crew li { animation: hop 0.6s ease-in-out 0.3s both; }
+  .crew li:nth-child(2) { animation-delay: 0.42s; }
+  .crew li:nth-child(3) { animation-delay: 0.54s; }
+  .crew li:nth-child(4) { animation-delay: 0.66s; }
+  .crew li:nth-child(5) { animation-delay: 0.78s; }
+}
+/* Only the position moves, so the crew stays visible even where animations never run. */
+@keyframes hop {
+  0%, 100% { transform: none; }
+  45% { transform: translateY(-1.4rem) rotate(-6deg); }
+}
+
+.hero-join {
+  align-self: start;
+  justify-self: end;
+  padding: 0 var(--gutter) 3.5rem;
+  width: min(34rem, 100%);
+}
+.hero-join p { margin: 0 0 1.5rem; font-size: 1.2rem; color: #e5e5ea; }
+
+.store-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  background: var(--signal);
+  color: var(--road);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+}
+.store-button:hover { background: var(--paper); }
+.store-button svg { width: 1.3rem; height: 1.3rem; }
+
+/* ---------- The route: one yellow line through the trip ---------- */
+
+.route {
+  position: relative;
+  padding: clamp(4rem, 10vw, 8rem) var(--gutter);
+}
+.route > h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  max-width: 14ch;
+  margin-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.stops {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* The route line, drawn like the app's trip map. */
+.stops::before {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 1.1rem;
+  width: 0.5rem;
+  border-radius: 1rem;
+  background: var(--signal);
+}
+
+.stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding-left: 3.75rem;
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+}
+.stop:last-child { padding-bottom: 0; }
+
+.flag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--signal);
+  color: var(--road);
+  border: 4px solid var(--road);
+}
+.flag svg { width: 1.2rem; height: 1.2rem; }
+
+.stop h3 { font-size: clamp(1.5rem, 3.2vw, 2.25rem); margin-bottom: 0.75rem; }
+.stop p { margin: 0; max-width: var(--measure); color: #d1d1d6; }
+
+.phone {
+  width: min(17rem, 72vw);
+  border-radius: 2.4rem;
+  border: 0.55rem solid var(--asphalt);
+  overflow: hidden;
+  background: var(--asphalt);
+}
+
+@media (min-width: 860px) {
+  .stops::before { left: 50%; transform: translateX(-50%); }
+  .stop {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0 7rem;
+    padding-left: 0;
+  }
+  .flag { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  .stop .copy { grid-column: 1; justify-self: end; text-align: right; }
+  .stop .copy p { margin-left: auto; }
+  .stop .phone { grid-column: 2; justify-self: start; }
+  .stop:nth-child(even) .copy { grid-column: 2; grid-row: 1; justify-self: start; text-align: left; }
+  .stop:nth-child(even) .copy p { margin-left: 0; }
+  .stop:nth-child(even) .phone { grid-column: 1; grid-row: 1; justify-self: end; }
+}
+
+/* ---------- Alerts: the app's alert pills ---------- */
+
+.alerts {
+  background: var(--signal);
+  color: var(--road);
+  padding: clamp(4rem, 9vw, 7rem) var(--gutter);
+}
+.alerts h2 { font-size: clamp(2rem, 5vw, 3.5rem); max-width: 16ch; }
+.alerts > p { max-width: var(--measure); margin: 1.25rem 0 2.5rem; font-size: 1.15rem; }
+
+.pills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.pills li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  background: var(--road);
+  color: var(--paper);
+  font-weight: 600;
+}
+.pills .dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  flex: none;
+}
+
+/* ---------- Made for the road ---------- */
+
+.road {
+  padding: clamp(4rem, 9vw, 7rem) var(--gutter);
+  display: grid;
+  gap: 2.5rem;
+}
+.road h2 { font-size: clamp(2rem, 5vw, 3.5rem); max-width: 12ch; }
+.road dl {
+  margin: 0;
+  display: grid;
+  gap: 1.75rem 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+.road dt { font-family: var(--display); font-weight: 700; font-size: 1.15rem; margin-bottom: 0.35rem; }
+.road dd { margin: 0; color: #d1d1d6; max-width: 28rem; }
+@media (min-width: 860px) {
+  .road { grid-template-columns: 1fr 2fr; align-items: start; }
+}
+
+/* ---------- Closing call ---------- */
+
+.closing {
+  padding: clamp(4rem, 9vw, 7rem) var(--gutter);
+  border-top: 1px solid #2c2c2e;
+  display: grid;
+  gap: 1.75rem;
+  justify-items: start;
+}
+.closing h2 { font-size: clamp(2rem, 6vw, 4.5rem); max-width: 13ch; }
+.closing p { margin: 0; max-width: var(--measure); color: #d1d1d6; }
+
+/* ---------- Footer ---------- */
+
+.footer {
+  padding: 2rem var(--gutter) 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--kerb);
+  font-size: 0.95rem;
+}
+.footer img { width: 6rem; }
+.footer nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.footer a { color: var(--paper); }
+
+/* ---------- Document pages (privacy, support) ---------- */
+
+.doc-header {
+  background: var(--signal);
+  color: var(--road);
+  padding: 1.25rem var(--gutter) clamp(3rem, 7vw, 5rem);
+}
+.doc-header a img { width: 7.5rem; margin-bottom: clamp(2.5rem, 6vw, 4rem); }
+.doc-header h1 { font-size: clamp(2.25rem, 6vw, 4rem); max-width: 14ch; }
+.doc-header p { margin: 1rem 0 0; font-weight: 600; }
+
+.doc {
+  padding: clamp(2.5rem, 6vw, 4rem) var(--gutter) 4rem;
+  max-width: calc(var(--measure) + 2 * var(--gutter) + 6rem);
+}
+.doc h2 {
+  font-size: 1.35rem;
+  margin: 2.75rem 0 0.75rem;
+  color: var(--signal);
+}
+.doc p, .doc li { color: #e5e5ea; }
+.doc ul { padding-left: 1.2rem; }
+.doc li { margin-bottom: 0.6rem; }
+.doc li::marker { color: var(--signal); }
+.doc strong { color: var(--paper); }
+.doc .lede { font-size: 1.2rem; color: var(--paper); }
+.doc .contact {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  background: var(--asphalt);
+}
+.doc .contact a { color: var(--signal); font-weight: 600; }
