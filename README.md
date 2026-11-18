@@ -22,6 +22,8 @@ Then open http://127.0.0.1:8791.
 
 The site is deployed on Vercel. `vercel.json` turns on clean URLs, so `/privacy/index.html` is served at `/privacy`.
 
+Every push to `main` deploys to production automatically, and every other branch gets a preview URL. The Vercel GitHub App is installed on the C5-M3 organization for this repository only. To deploy by hand:
+
 ```bash
 vercel deploy --prod
 ```
