@@ -26,7 +26,7 @@ The site is deployed on Vercel. `vercel.json` turns on clean URLs, so `/privacy/
 vercel deploy --prod
 ```
 
-The domain `lezgo.nathansudiara.com` points to Vercel with a DNS record in Cloudflare (CNAME `lezgo` → `cname.vercel-dns.com`, DNS only, not proxied).
+The domain `lezgo.nathansudiara.com` points to Vercel with a DNS record in Cloudflare: type `A`, name `lezgo`, value `76.76.21.21`, proxy status DNS only (grey cloud), so Vercel can issue the HTTPS certificate.
 
 ## Keep the privacy policy true
 
