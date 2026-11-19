@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Join a Lezgo trip</title>
+  <meta name="description" content="You were invited to a Lezgo trip. Open the invite in Lezgo, or type the room code.">
+  <meta name="theme-color" content="#f7ff00">
+  <meta name="robots" content="noindex">
+  <meta name="apple-itunes-app" content="app-id=6826083177">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="doc-header">
+    <a href="/" aria-label="Lezgo home"><img src="/assets/lezgo-black.png" alt="Lezgo" width="857" height="210"></a>
+    <h1>Join the trip</h1>
+    <p id="lede">Someone invited you to drive with their group.</p>
+  </header>
+
+  <main id="main" class="doc join">
+    <p class="join-code" id="code" hidden aria-label="Room code"></p>
+    <div class="join-actions">
+      <a class="store-button" id="open" href="lezgo://join" hidden>Open in Lezgo</a>
+      <a class="store-button store-button-quiet" href="https://apps.apple.com/app/id6826083177">Get Lezgo on the App Store</a>
+    </div>
+    <p>Don't have Lezgo yet? Install it, then tap the invite link again, or open Lezgo, tap Join and type the room code.</p>
+  </main>
+
+  <footer class="footer">
+    <img src="/assets/lezgo-yellow.png" alt="Lezgo" width="858" height="210">
+    <nav aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/support">Support</a>
+      <a href="/privacy">Privacy Policy</a>
+    </nav>
+  </footer>
+
+  <script>
+    // Shows the code only; the app checks it again before joining.
+    const code = new URLSearchParams(location.search).get("code") || "";
+    if (/^[0-9]{6}$/.test(code)) {
+      const codeElement = document.getElementById("code");
+      codeElement.textContent = code;
+      codeElement.hidden = false;
+      const open = document.getElementById("open");
+      open.href = "lezgo://join?code=" + code;
+      open.hidden = false;
+      document.getElementById("lede").textContent = "Someone invited you to drive with their group. Your room code:";
+    }
+  </script>
+</body>
+</html>

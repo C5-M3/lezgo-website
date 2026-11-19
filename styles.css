@@ -352,3 +352,18 @@ h1, h2, h3 {
   background: var(--asphalt);
 }
 .doc .contact a { color: var(--signal); font-weight: 600; }
+
+/* ---------- Invite link page (/join) ---------- */
+
+.doc .join-code {
+  margin: 0 0 2rem;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.75rem, 12vw, 4.5rem);
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--signal);
+}
+.join-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+.store-button-quiet { background: var(--asphalt); color: var(--paper); }
+.store-button-quiet:hover { background: var(--paper); color: var(--road); }
