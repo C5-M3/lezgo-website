@@ -71,59 +71,81 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .facts svg { width: 16px; height: 16px; color: var(--signal); }
 .split-line { padding-bottom: .08em; }
 
-.steps { position: relative; padding-left: 64px; }
-.route { position: absolute; left: 18px; top: 0; bottom: 0; width: 6px; }
-.route-track, .route-fill { position: absolute; inset: 0; border-radius: 3px; background: var(--line); }
-.route-fill { background: var(--signal); transform-origin: top; transform: scaleY(1); box-shadow: 0 0 18px rgba(247, 255, 0, .35); }
-.route-car { position: absolute; left: 21px; top: 0; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; background: var(--black); border: 3px solid var(--signal); display: grid; place-items: center; z-index: 2; }
-.route-car img { width: 32px; }
-.step { min-height: 92vh; display: flex; flex-direction: column; justify-content: center; padding-block: 64px; max-width: 34rem; position: relative; }
-.step .pin { position: absolute; left: -57px; width: 26px; height: 26px; margin-top: 4px; border-radius: 50%; background: var(--black); border: 4px solid var(--line); transition: border-color .3s, background-color .3s; }
-.step.reached .pin { border-color: var(--signal); background: var(--signal); }
-.step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 18px; position: relative; }
+/* How it works. Without JavaScript the four stops are a plain list. With it (`.motion`), the stops pin under the
+   header: the page scrolls four steps' worth while one stop shows at a time, and the phone beside them changes. */
+.steps { position: relative; }
+.steps-pin { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); }
+.rail { position: relative; justify-self: center; width: 6px; }
+.rail-track, .rail-fill { position: absolute; inset: 0; border-radius: 3px; background: var(--line); }
+.rail-fill { background: var(--signal); transform-origin: top; transform: scaleY(0); box-shadow: 0 0 18px rgba(247, 255, 0, .3); }
+.rail-pin { position: absolute; left: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--black); border: 4px solid var(--line); transition: border-color .3s, background-color .3s; }
+.rail-pin:nth-of-type(3) { top: 0; }
+.rail-pin:nth-of-type(4) { top: 33.333%; }
+.rail-pin:nth-of-type(5) { top: 66.666%; }
+.rail-pin:nth-of-type(6) { top: 100%; }
+.rail-pin.on { border-color: var(--signal); background: var(--signal); }
+.rail-car { position: absolute; left: 50%; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: var(--black); border: 3px solid var(--signal); display: grid; place-items: center; z-index: 1; will-change: transform; }
+.rail-car img { width: 30px; }
+.step-list { display: grid; gap: 96px; padding-block: 64px 120px; }
+.step { max-width: 34rem; }
+.step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 18px; }
 .step-head .count { color: var(--signal); font-weight: 700; font-size: 1rem; font-variant-numeric: tabular-nums; }
 .step-head .place { color: var(--ink-soft); font-weight: 500; font-size: 1rem; }
-.step h2 { font-size: clamp(2.2rem, 4.6vw, 3.8rem); }
+.step h2 { font-size: clamp(2.2rem, 4.4vw, 3.6rem); }
 .step p { color: var(--ink-soft); margin: 20px 0 0; max-width: 30rem; }
+
+.motion .steps { height: 400vh; }
+.motion .steps-pin { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 73px); height: calc(100vh - 73px); align-items: center; }
+.motion .rail { height: min(46vh, 360px); }
+.motion .step-list { gap: 0; padding: 0; }
+.motion .step { grid-area: 1 / 1; align-self: center; }
+.motion .step:not(:first-child) { visibility: hidden; opacity: 0; }
+html:not(.motion) .rail { display: none; }
 
 /* The header is 73px tall; the sticky phone sits below it so it is never cut off. */
 .stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 73px); height: calc(100vh - 73px); display: grid; place-items: center; }
 .stage-inner { position: relative; display: grid; justify-items: center; gap: 22px; }
 .streets { position: absolute; inset: -18% -40%; z-index: -1; opacity: .7; }
-.phone { position: relative; width: min(320px, 34vh, 26vw); aspect-ratio: 506 / 1100; border-radius: 50px; padding: 10px; background: #000; box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 7px #0d0d0d, 0 0 0 8px #262626, 0 60px 120px -40px rgba(247, 255, 0, .22); will-change: transform; }
-.screen { position: relative; width: 100%; height: 100%; border-radius: 40px; overflow: hidden; background: var(--map); }
-.screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; clip-path: inset(100% 0 0 0); }
-.screen img.current { clip-path: inset(0 0 0 0); }
+.phone { position: relative; width: min(330px, 36vh, 26vw); aspect-ratio: 1320 / 2868; border-radius: 52px; padding: 10px; background: #000; box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 7px #0d0d0d, 0 0 0 8px #262626, 0 60px 120px -40px rgba(247, 255, 0, .22); will-change: transform; }
+.screen { position: relative; width: 100%; height: 100%; border-radius: 42px; overflow: hidden; background: var(--map); isolation: isolate; }
+.screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+.screen img.current { opacity: 1; }
 .progress { display: flex; gap: 8px; }
 .progress span { width: 28px; height: 4px; border-radius: 2px; background: var(--line); transition: background-color .3s, width .3s; }
 .progress span.on { background: var(--signal); width: 44px; }
 
-/* Phones: the phone pins under the header on a solid black panel with a hairline edge. The stops scroll up
-   underneath, so text is hidden by the panel instead of showing through the phone. */
+/* Phones: the phone pins under the header on a solid black panel with a hairline edge, and the stops pin right
+   below it, so nothing ever scrolls behind the phone. */
 @media (max-width: 860px) {
-  .story { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .story { --phone-h: min(40svh, 380px); --stage-h: calc(var(--phone-h) + 47px); grid-template-columns: minmax(0, 1fr); gap: 0; }
   .story > div:first-child { display: contents; }
   .lead { order: 1; min-height: auto; padding-block: 40px 40px; }
   .lead h1 { font-size: clamp(2.9rem, 13vw, 4.4rem); }
   .lead > p { font-size: 1.1rem; }
   .facts { margin-top: 28px; }
-  .stage { order: 2; top: calc(env(safe-area-inset-top, 0px) + 73px); z-index: 5; height: auto; padding-block: 16px 14px; border-bottom: 1px solid var(--line);
-    margin-inline: calc(-1 * max(var(--gutter), env(safe-area-inset-left, 0px))); background: var(--black); }
+  .stage { order: 2; top: calc(env(safe-area-inset-top, 0px) + 73px); z-index: 5; height: var(--stage-h); padding-block: 16px 14px; border-bottom: 1px solid var(--line);
+    margin-inline: calc(-1 * max(var(--gutter), env(safe-area-inset-left, 0px))); background: var(--black); align-content: start; }
   .stage-inner { gap: 12px; }
   .streets { display: none; }
-  .phone { width: calc(min(40svh, 380px) * 506 / 1100); border-radius: 32px; padding: 6px; box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 5px #0d0d0d, 0 0 0 6px #262626; }
+  .phone { width: calc(var(--phone-h) * 1320 / 2868); border-radius: 32px; padding: 6px; box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 5px #0d0d0d, 0 0 0 6px #262626; }
   .screen { border-radius: 27px; }
-  .steps { order: 3; padding-left: 48px; }
-  .step { min-height: 58svh; justify-content: flex-start; padding-block: 48px 40px; }
-  .step h2 { font-size: clamp(1.9rem, 8.4vw, 2.6rem); }
+  .steps { order: 3; }
+  .steps-pin { grid-template-columns: 24px minmax(0, 1fr); gap: 18px; }
+  .step h2 { font-size: clamp(1.8rem, 7.6vw, 2.5rem); }
   .step p { margin-top: 12px; font-size: 1.02rem; }
   .step-head { margin-bottom: 10px; }
-  .step .pin { left: -41px; margin-top: 2px; }
-  .route { left: 12px; }
-  .route-car { left: 15px; width: 40px; height: 40px; margin: -20px 0 0 -20px; }
-  .route-car img { width: 27px; }
+  .rail-pin { width: 18px; height: 18px; margin: -9px 0 0 -9px; border-width: 3px; }
+  .rail-car { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
+  .rail-car img { width: 24px; }
+  .motion .steps { height: 320svh; }
+  .motion .steps-pin { top: calc(env(safe-area-inset-top, 0px) + 73px + var(--stage-h)); height: calc(100svh - 73px - var(--stage-h)); }
+  .motion .rail { height: 72%; }
 }
-@media (max-width: 860px) and (max-height: 700px) { .phone { width: calc(34svh * 506 / 1100); } .step { min-height: 64svh; } }
+@media (max-width: 860px) and (max-height: 700px) {
+  .story { --phone-h: 32svh; }
+  .step h2 { font-size: clamp(1.6rem, 6.8vw, 2.1rem); }
+  .step p { font-size: .96rem; }
+}
 
 /* room code */
 .code { padding-block: clamp(96px, 12vw, 160px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; border-top: 1px solid var(--line); }
@@ -186,9 +208,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .closing img.icon { width: 96px; border-radius: 24px; box-shadow: 0 20px 60px -20px rgba(247, 255, 0, .45); }
 .closing h2 { font-size: clamp(2.8rem, 8vw, 7rem); max-width: 12ch; }
 .closing p { color: var(--ink-soft); margin: 0; max-width: 30rem; }
-.crew { display: flex; justify-content: center; align-items: flex-end; gap: clamp(6px, 2vw, 24px); margin-top: 24px; }
-.crew img { width: clamp(44px, 8vw, 92px); }
-.crew img.leader { width: clamp(56px, 10vw, 118px); }
+.crew { display: flex; justify-content: center; align-items: flex-end; gap: clamp(0px, 1vw, 16px); margin-top: 32px; max-width: 100%; }
+.crew img { width: clamp(58px, 10vw, 124px); height: auto; }
+.crew img.leader { width: clamp(72px, 12.5vw, 156px); }
 
 /* ---------- Support, Privacy and Join ---------- */
 
@@ -219,7 +241,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .join-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .top, .step .pin, .progress span { transition: none; }
+  .top, .rail-pin, .progress span { transition: none; }
 }
 
 /* Support, Privacy and Join have no scroll script, so their header keeps its hairline. */

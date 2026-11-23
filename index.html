@@ -43,33 +43,35 @@
       </section>
 
       <div class="steps" id="how">
-        <div class="route" aria-hidden="true"><span class="route-track"></span><span class="route-fill"></span></div>
-        <div class="route-car" aria-hidden="true"><img src="/assets/crew-yellow.png" alt="" width="360" height="281"></div>
-
-        <section class="step" data-screen="0" aria-labelledby="b1">
-          <span class="pin" aria-hidden="true"></span>
-          <div class="step-head"><span class="count">Stop 1 of 4</span><span class="place">Before you leave</span></div>
-          <h2 id="b1">The leader plans the route once.</h2>
-          <p>Pick a start point, add checkpoints for fuel or food, and set the destination. Lezgo draws the route the whole group will follow.</p>
-        </section>
-        <section class="step" data-screen="1" aria-labelledby="b2">
-          <span class="pin" aria-hidden="true"></span>
-          <div class="step-head"><span class="count">Stop 2 of 4</span><span class="place">In the Trip Room</span></div>
-          <h2 id="b2">Everyone joins with a 6-digit code.</h2>
-          <p>Share the room code or an invite link. Each car joins with one phone, and the group checks the route and who is coming before setting off.</p>
-        </section>
-        <section class="step" data-screen="2" aria-labelledby="b3">
-          <span class="pin" aria-hidden="true"></span>
-          <div class="step-head"><span class="count">Stop 3 of 4</span><span class="place">On the road</span></div>
-          <h2 id="b3">Every car on one map.</h2>
-          <p>Everyone follows the same turn-by-turn route. Tap a car to see its driver, street and arrival time.</p>
-        </section>
-        <section class="step" data-screen="3" aria-labelledby="b4">
-          <span class="pin" aria-hidden="true"></span>
-          <div class="step-head"><span class="count">Stop 4 of 4</span><span class="place">If something changes</span></div>
-          <h2 id="b4">A wrong turn gets caught right away.</h2>
-          <p>The driver hears about it as it happens. If the leader changes roads, the route is recalculated for everyone.</p>
-        </section>
+        <div class="steps-pin">
+          <div class="rail" aria-hidden="true">
+            <span class="rail-track"></span><span class="rail-fill"></span>
+            <span class="rail-pin"></span><span class="rail-pin"></span><span class="rail-pin"></span><span class="rail-pin"></span>
+            <span class="rail-car"><img src="/assets/crew-yellow.png" alt="" width="448" height="351"></span>
+          </div>
+          <div class="step-list">
+            <section class="step" data-screen="0" aria-labelledby="b1">
+              <div class="step-head"><span class="count">Stop 1 of 4</span><span class="place">Before you leave</span></div>
+              <h2 id="b1">The leader plans the route once.</h2>
+              <p>Pick a start point, add checkpoints for fuel or food, and set the destination. Lezgo draws the route the whole group will follow.</p>
+            </section>
+            <section class="step" data-screen="1" aria-labelledby="b2">
+              <div class="step-head"><span class="count">Stop 2 of 4</span><span class="place">In the Trip Room</span></div>
+              <h2 id="b2">Everyone joins with a 6-digit code.</h2>
+              <p>Share the room code or an invite link. Each car joins with one phone, and the group checks the route and who is coming before setting off.</p>
+            </section>
+            <section class="step" data-screen="2" aria-labelledby="b3">
+              <div class="step-head"><span class="count">Stop 3 of 4</span><span class="place">On the road</span></div>
+              <h2 id="b3">Every car on one map.</h2>
+              <p>Everyone follows the same turn-by-turn route. Tap a car to see its driver, street and arrival time.</p>
+            </section>
+            <section class="step" data-screen="3" aria-labelledby="b4">
+              <div class="step-head"><span class="count">Stop 4 of 4</span><span class="place">If something changes</span></div>
+              <h2 id="b4">A wrong turn gets caught right away.</h2>
+              <p>The driver hears about it as it happens. If the leader changes roads, the route is recalculated for everyone.</p>
+            </section>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -86,10 +88,10 @@
         </svg>
         <div class="phone">
           <div class="screen">
-            <img src="/assets/screen-draftTripLeader.jpg" alt="" width="506" height="1100">
-            <img src="/assets/screen-tripRoomLeader.jpg" alt="" width="506" height="1100">
-            <img class="current" src="/assets/screen-tripMapMemberGroup.jpg" alt="" width="506" height="1100">
-            <img src="/assets/screen-tripMapMemberOffRoute.jpg" alt="" width="506" height="1100">
+            <img src="/assets/screen-planRoute.jpg" alt="" width="720" height="1564">
+            <img src="/assets/screen-tripRoomLeader.jpg" alt="" width="720" height="1564">
+            <img class="current" src="/assets/screen-tripMapMemberGroup.jpg" alt="" width="720" height="1564">
+            <img src="/assets/screen-tripMapMemberOffRoute.jpg" alt="" width="720" height="1564">
           </div>
         </div>
         <div class="progress"><span></span><span></span><span></span><span></span></div>
@@ -120,7 +122,7 @@
       <p class="note" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg>Tap an alert to hear how it sounds.</p>
     </div>
     <div class="hear-phone" aria-hidden="true">
-      <div class="phone"><div class="screen"><img class="current" src="/assets/screen-tripMapMemberOffRoute.jpg" alt="" width="506" height="1100" loading="lazy"></div></div>
+      <div class="phone"><div class="screen"><img class="current" src="/assets/screen-tripMapMemberOffRoute.jpg" alt="" width="720" height="1564" loading="lazy"></div></div>
     </div>
   </section>
 
@@ -151,11 +153,11 @@
     <p>Lezgo is free for iPhone. It needs an iCloud account and location access while the trip is open.</p>
     <a class="store" href="https://apps.apple.com/app/id6826083177">Download on the App Store</a>
     <div class="crew" aria-hidden="true">
-      <img src="/assets/crew-pink.png" alt="" width="307" height="360">
-      <img src="/assets/crew-blue.png" alt="" width="360" height="339">
-      <img class="leader" src="/assets/crew-yellow.png" alt="" width="360" height="281">
-      <img src="/assets/crew-purple.png" alt="" width="360" height="251">
-      <img src="/assets/crew-green.png" alt="" width="360" height="313">
+      <img src="/assets/crew-pink.png" alt="" width="350" height="370">
+      <img src="/assets/crew-blue.png" alt="" width="372" height="367">
+      <img class="leader" src="/assets/crew-yellow.png" alt="" width="448" height="351">
+      <img src="/assets/crew-purple.png" alt="" width="450" height="375">
+      <img src="/assets/crew-green.png" alt="" width="468" height="375">
     </div>
   </section>
 </main>
@@ -168,7 +170,6 @@
   <script src="/assets/vendor/gsap.min.js" defer></script>
   <script src="/assets/vendor/ScrollTrigger.min.js" defer></script>
   <script src="/assets/vendor/SplitText.min.js" defer></script>
-  <script src="/assets/vendor/lenis.min.js" defer></script>
   <script src="/main.js" defer></script>
 </body>
 </html>

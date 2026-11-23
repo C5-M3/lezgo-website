@@ -1,6 +1,6 @@
-// Landing page motion. GSAP and Lenis are saved in /assets/vendor so the site loads no outside scripts.
-// Without this file the page still works: the phone shows the trip map, the route is drawn
-// and the alerts are listed in the app's own words.
+// Landing page motion. GSAP is saved in /assets/vendor so the site loads no outside scripts. Scrolling stays the
+// browser's own. Without this file the page still works: the four stops are a plain list beside the phone, and the
+// alerts are listed in the app's own words.
 (() => {
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -10,47 +10,68 @@
   const header = document.querySelector(".top");
   ScrollTrigger.create({ start: 8, end: "max", onToggle: self => header.classList.toggle("scrolled", self.isActive) });
 
-  // Sticky phone: each stop wipes its screen into the phone; the progress bar under it follows.
+  // How it works: the stops pin under the header and the page scrolls through them one at a time. The phone
+  // crossfades to the matching screen, the stop's text slides in, and the leader's car moves down the rail.
+  document.documentElement.classList.add("motion");
   const screens = gsap.utils.toArray(".stage .screen img");
   const progress = gsap.utils.toArray(".progress span");
-  let current = 2;
-  function showScreen(index) {
-    progress.forEach((bar, i) => bar.classList.toggle("on", i === index));
-    if (index === current) return;
-    const goingDown = index > current;
-    const incoming = screens[index];
-    const outgoing = screens[current];
-    current = index;
-    gsap.killTweensOf(screens);
-    screens.forEach(screen => {
-      if (screen !== incoming && screen !== outgoing) gsap.set(screen, { clipPath: "inset(100% 0 0 0)", zIndex: 0 });
-    });
-    gsap.set(outgoing, { zIndex: 1 });
-    gsap.fromTo(incoming, { clipPath: goingDown ? "inset(100% 0 0 0)" : "inset(0 0 100% 0)", zIndex: 2 },
-      { clipPath: "inset(0% 0 0% 0)", duration: reduce ? 0 : 0.7, ease: "power3.inOut" });
-  }
-  ScrollTrigger.create({ trigger: ".lead", start: "top 55%", end: "bottom 55%", onToggle: self => { if (self.isActive) showScreen(2); } });
-
   const steps = gsap.utils.toArray(".step");
-  const stepsElement = document.querySelector(".steps");
-  const car = document.querySelector(".route-car");
-  // `line` is how far down the screen a stop must reach before it counts as the current one.
-  function storyTriggers(line) {
-    steps.forEach(step => {
-      ScrollTrigger.create({ trigger: step, start: `top ${line}`, end: `bottom ${line}`,
-        onToggle: self => { if (self.isActive) showScreen(Number(step.dataset.screen)); } });
-      ScrollTrigger.create({ trigger: step.querySelector(".pin"), start: `top ${line}`,
-        onEnter: () => step.classList.add("reached"), onLeaveBack: () => step.classList.remove("reached") });
+  const pins = gsap.utils.toArray(".rail-pin");
+  const heroScreen = screens.findIndex(screen => screen.classList.contains("current"));
+  let shownScreen = heroScreen;
+  let shownStep = 0;
+
+  function showScreen(index) {
+    if (index === shownScreen) return;
+    const incoming = screens[index];
+    shownScreen = index;
+    screens.forEach(screen => {
+      screen.classList.toggle("current", screen === incoming);
+      gsap.set(screen, { zIndex: screen === incoming ? 2 : 1 });
     });
-    // The route: the yellow line fills down the story and the leader's car rides its tip.
-    gsap.fromTo(".route-fill", { scaleY: 0 }, { scaleY: 1, ease: "none",
-      scrollTrigger: { trigger: stepsElement, start: `top ${line}`, end: `bottom ${line}`, scrub: true,
-        onUpdate: self => gsap.set(car, { y: self.progress * stepsElement.offsetHeight }) } });
+    gsap.killTweensOf(screens);
+    gsap.to(screens.filter(screen => screen !== incoming), { autoAlpha: 0, duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.15, ease: "power1.out" });
+    gsap.fromTo(incoming, { autoAlpha: 0, scale: 1.04 }, { autoAlpha: 1, scale: 1, duration: reduce ? 0 : 0.6, ease: "power2.out" });
   }
-  const layouts = gsap.matchMedia();
-  layouts.add("(min-width: 861px)", () => storyTriggers("55%"));
-  // On phones the sticky phone fills the top of the screen, so a stop counts once it is lower down.
-  layouts.add("(max-width: 860px)", () => storyTriggers("75%"));
+
+  function showStep(index) {
+    pins.forEach((pin, i) => pin.classList.toggle("on", i <= index));
+    progress.forEach((bar, i) => bar.classList.toggle("on", i === index));
+    if (index === shownStep) return;
+    const direction = index > shownStep ? 1 : -1;
+    const outgoing = steps[shownStep];
+    const incoming = steps[index];
+    shownStep = index;
+    gsap.killTweensOf(steps);
+    gsap.to(steps.filter(step => step !== incoming), { autoAlpha: 0, y: -28 * direction, duration: reduce ? 0 : 0.3, ease: "power2.in" });
+    gsap.fromTo(incoming, { autoAlpha: 0, y: 36 * direction },
+      { autoAlpha: 1, y: 0, duration: reduce ? 0 : 0.55, delay: reduce || !outgoing ? 0 : 0.18, ease: "power3.out" });
+  }
+
+  const pinned = document.querySelector(".steps-pin");
+  const rail = document.querySelector(".rail");
+  const fill = document.querySelector(".rail-fill");
+  const car = document.querySelector(".rail-car");
+  ScrollTrigger.create({
+    trigger: ".steps",
+    start: () => `top ${parseFloat(getComputedStyle(pinned).top) || 0}px`,
+    end: "bottom bottom",
+    invalidateOnRefresh: true,
+    onUpdate: self => {
+      // Each stop holds for a quarter of the scroll; the rail fills smoothly between them.
+      const index = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
+      showStep(index);
+      showScreen(Number(steps[index].dataset.screen));
+      const travelled = Math.min(1, self.progress * steps.length / (steps.length - 1) - 0.5 / (steps.length - 1));
+      const along = Math.max(0, travelled);
+      gsap.set(fill, { scaleY: along });
+      gsap.set(car, { y: along * rail.offsetHeight });
+    },
+    onLeaveBack: () => {
+      showScreen(heroScreen);
+      progress.forEach(bar => bar.classList.remove("on"));
+    }
+  });
 
   // Room code: digits flicker through numbers and lock in, left to right.
   const digits = gsap.utils.toArray(".code .digits span");
@@ -89,14 +110,6 @@
   }
 
   if (reduce) return;
-
-  // Smooth scrolling, driven by GSAP's ticker.
-  if (window.Lenis) {
-    const lenis = new Lenis({ lerp: 0.1 });
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add(time => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
-  }
 
   // The one orchestrated load: headline lines rise, then the phone springs up beside them.
   document.fonts.ready.then(() => {
