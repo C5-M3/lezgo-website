@@ -10,7 +10,9 @@ The public website for the Lezgo iOS app, served at **https://joinlezgo.app**. T
 | `/join?code=897654` | Invite link to a trip | Shared from the app's Trip Room. Opens Lezgo when it is installed (universal link), otherwise shows the room code |
 | `/.well-known/apple-app-site-association` | Lists the app IDs that open `/join` links | iOS, when Lezgo is installed |
 
-It is plain HTML and CSS with no build step. `main.js` adds the landing page's scroll motion with [GSAP](https://gsap.com), saved in `assets/vendor/` (GSAP 3.13.0 with ScrollTrigger and SplitText) so the site loads no outside scripts. Scrolling itself stays the browser's own. Every page still works without JavaScript. Colors, logo and mascots come from the app's asset catalog in [C5-M3/Lezgo](https://github.com/C5-M3/Lezgo) (`Lezgo/Resources/Assets.xcassets`); the screenshots come from the app's debug screens.
+It is plain HTML and CSS with no build step. `main.js` adds the landing page's motion: the pinned "How it works" story that changes the phone screen per step, and the live map tile. It uses [GSAP](https://gsap.com) with ScrollTrigger, saved in `assets/vendor/` (GSAP 3.13.0) so the site loads no outside scripts. Scrolling itself stays the browser's own. Every page still works without JavaScript, and people who turn on Reduce Motion get the still version. The page follows the visitor's light or dark mode. Colors, the app icon and the mascots come from the app's asset catalog in [C5-M3/Lezgo](https://github.com/C5-M3/Lezgo) (`Lezgo/Resources/Assets.xcassets`).
+
+The app screenshots (`assets/app-*.jpg`) come from the app's debug screens on an iPhone 17 Pro simulator with the status bar set to 9:41, in dark mode. The phone frame and Dynamic Island are drawn by CSS (`.phone` in `styles.css`), so every screenshot looks the same in its frame. Vercel caches `/assets` for a week: when you replace an image, give it a new file name.
 
 ## Run it locally
 

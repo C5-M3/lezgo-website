@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Lezgo: Road Trip Companion</title>
   <meta name="description" content="Lezgo keeps a group of cars together on a road trip. The lead driver plans the route, and every car sees the same route and each other on the map.">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Lezgo: Road Trip Companion">
   <meta property="og:description" content="Plan the route once and keep every car together.">
   <meta property="og:image" content="https://joinlezgo.app/assets/app-icon-180.png">
@@ -14,135 +15,185 @@
   <link rel="apple-touch-icon" href="/assets/app-icon-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <script>
+    // Turn on the landing page's motion before the first paint, unless the visitor asked for less motion.
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("motion");
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
-  <header class="top wrap">
-    <a href="/" aria-label="Lezgo home"><img src="/assets/lezgo-yellow.png" alt="Lezgo" width="858" height="210"></a>
-    <nav aria-label="Site"><a href="#how">How it works</a><a href="/support">Support</a><a href="/privacy">Privacy</a><a class="get" href="https://apps.apple.com/app/id6826083177">Get the app</a></nav>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/assets/app-icon-180.png" alt="" width="180" height="180">Lezgo</a>
+      <nav aria-label="Site"><a href="#how">How it works</a><a href="#features">Features</a><a href="/support">Support</a><a class="get" href="https://apps.apple.com/app/id6826083177">Get the app</a></nav>
+    </div>
   </header>
 
 <main id="main">
-  <div class="story wrap">
-    <div>
-      <section class="lead" aria-labelledby="hero-title">
-        <h1 id="hero-title">Road trips where nobody gets lost.</h1>
-        <p>Lezgo keeps a group of cars together. The lead driver plans the route, and every car sees the same route and each other on the map.</p>
-        <div class="actions">
-          <a class="store" href="https://apps.apple.com/app/id6826083177"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.8-1-2.8-4.2zM14 5.3c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>Download on the App Store</a>
-          <a class="ghost" href="#how">See how it works</a>
-        </div>
-        <ul class="facts">
-          <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Free for iPhone</li>
-          <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Works with CarPlay</li>
-          <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>No accounts, no ads</li>
-        </ul>
-      </section>
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <img class="icon rise-in" src="/assets/app-icon-180.png" alt="" width="180" height="180">
+    <h1 class="rise-in" id="hero-title">Drive together, arrive together.</h1>
+    <p class="rise-in">Lezgo keeps a group of cars on one route. The leader plans it, everyone follows it, and you see every car on the map.</p>
+    <div class="rise-in"><a class="store" href="https://apps.apple.com/app/id6826083177"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.8-1-2.8-4.2zM14 5.3c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>Download on the App Store</a></div>
+    <div class="meta rise-in">Free for iPhone. Works with CarPlay.</div>
+    <div class="fan" aria-hidden="true">
+      <div class="phone left"><div class="screen"><img src="/assets/app-set-route.jpg" alt="" width="900" height="1957"></div></div>
+      <div class="phone middle"><div class="screen"><img src="/assets/app-trip-map.jpg" alt="" width="900" height="1957"></div></div>
+      <div class="phone right"><div class="screen"><img src="/assets/app-trip-room.jpg" alt="" width="900" height="1957"></div></div>
+    </div>
+  </section>
 
-      <div class="steps" id="how">
-        <div class="steps-pin">
-          <div class="rail" aria-hidden="true">
-            <span class="rail-track"></span><span class="rail-fill"></span>
-            <span class="rail-pin"></span><span class="rail-pin"></span><span class="rail-pin"></span><span class="rail-pin"></span>
-            <span class="rail-car"><img src="/assets/mascot-yellow.png" alt="" width="448" height="351"></span>
+  <section class="story" id="how" aria-labelledby="how-title">
+    <div class="story-pin wrap">
+      <div class="story-copy">
+        <h2 id="how-title">From plan to parked.</h2>
+        <div class="below">
+          <div class="steps">
+            <article class="step"><span class="count">Step 1 of 4</span><h3>The leader plans the route once.</h3><p>Pick a start point, add stops for fuel or food, and set the destination. Lezgo draws the route the whole group follows.</p></article>
+            <article class="step"><span class="count">Step 2 of 4</span><h3>Friends join with a 6-digit code.</h3><p>Share the room code or an invite link. One phone per car. Check the route and who is coming before you set off.</p></article>
+            <article class="step"><span class="count">Step 3 of 4</span><h3>Every car on one map.</h3><p>Everyone follows the same turn-by-turn route. Tap a car to see its driver, street and arrival time.</p></article>
+            <article class="step"><span class="count">Step 4 of 4</span><h3>Wrong turns get caught right away.</h3><p>Lezgo says it out loud, so eyes stay on the road. If the leader changes roads, the route updates for everyone.</p></article>
           </div>
-          <div class="step-list">
-            <section class="step" data-screen="0" aria-labelledby="b1">
-              <div class="step-head"><span class="count">Stop 1 of 4</span><span class="place">Before you leave</span></div>
-              <h2 id="b1">The leader plans the route once.</h2>
-              <p>Pick a start point, add checkpoints for fuel or food, and set the destination. Lezgo draws the route the whole group will follow.</p>
-            </section>
-            <section class="step" data-screen="1" aria-labelledby="b2">
-              <div class="step-head"><span class="count">Stop 2 of 4</span><span class="place">In the Trip Room</span></div>
-              <h2 id="b2">Everyone joins with a 6-digit code.</h2>
-              <p>Share the room code or an invite link. Each car joins with one phone, and the group checks the route and who is coming before setting off.</p>
-            </section>
-            <section class="step" data-screen="2" aria-labelledby="b3">
-              <div class="step-head"><span class="count">Stop 3 of 4</span><span class="place">On the road</span></div>
-              <h2 id="b3">Every car on one map.</h2>
-              <p>Everyone follows the same turn-by-turn route. Tap a car to see its driver, street and arrival time.</p>
-            </section>
-            <section class="step" data-screen="3" aria-labelledby="b4">
-              <div class="step-head"><span class="count">Stop 4 of 4</span><span class="place">If something changes</span></div>
-              <h2 id="b4">A wrong turn gets caught right away.</h2>
-              <p>Lezgo says it out loud, so the driver keeps their eyes on the road. If the leader changes roads, the route is recalculated for everyone.</p>
-            </section>
-          </div>
+          <div class="dots" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span></div>
         </div>
       </div>
+      <div class="stage">
+        <div class="phone"><div class="screen">
+          <img src="/assets/app-set-route.jpg" alt="Set Route: Tunjungan Plaza to Ciputra World Surabaya on the map" width="900" height="1957">
+          <img src="/assets/app-trip-room.jpg" alt="The Trip Room: the route and five participants, with Start Trip" width="900" height="1957">
+          <img src="/assets/app-trip-map.jpg" alt="The trip map: the shared yellow route with Agus ahead and you behind" width="900" height="1957">
+          <img src="/assets/app-off-route.jpg" alt="The trip map with the alert: You're out of the way" width="900" height="1957">
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features wrap" id="features" aria-labelledby="features-title">
+    <div class="section-head">
+      <h2 id="features-title">Everything a convoy needs.</h2>
+      <p>Made for friends and family driving in more than one car.</p>
     </div>
 
-    <div class="stage" aria-hidden="true">
-      <div class="stage-inner">
-        <svg class="streets" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice">
-          <g fill="none" stroke="#141414" stroke-linecap="round">
-            <path stroke-width="26" d="M-20 220 C 160 190, 380 300, 620 250"/>
-            <path stroke-width="16" d="M140 -20 C 180 260, 90 520, 170 820"/>
-            <path stroke-width="16" d="M470 -20 C 430 300, 520 560, 460 820"/>
-            <path stroke-width="10" d="M-20 600 C 200 570, 420 650, 620 610"/>
-            <path stroke-width="8" d="M300 -20 L 320 820"/>
+    <div class="bento">
+      <article class="tile dark map span-8 tall">
+        <div class="copy">
+          <span class="kicker">Live map</span>
+          <h3>Every car on one map.</h3>
+          <p>The whole group on one route. Tap a car to see its driver, street and arrival time.</p>
+        </div>
+        <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Five cars driving along a yellow route">
+          <rect width="800" height="600" fill="#1d2532"/>
+          <g fill="#222b3a"><rect x="430" y="250" width="140" height="110" rx="6"/><rect x="600" y="380" width="150" height="120" rx="6"/><rect x="140" y="400" width="140" height="150" rx="6"/><rect x="300" y="470" width="110" height="90" rx="6"/></g>
+          <g fill="none" stroke="#34405a" stroke-linecap="round">
+            <path stroke-width="12" d="M-20 380 C 200 360, 500 420, 820 350"/>
+            <path stroke-width="9" d="M-20 520 C 300 510, 600 540, 820 500"/>
+            <path stroke-width="9" d="M220 180 C 240 350, 200 480, 250 620"/>
+            <path stroke-width="10" d="M600 180 C 610 330, 570 480, 610 620"/>
+            <path stroke-width="5" d="M400 180 L 420 620"/><path stroke-width="5" d="M720 180 L 700 620"/>
           </g>
+          <path id="map-route" d="M760 250 C 700 280, 660 330, 600 360 S 480 400, 400 420 S 260 440, 210 480 S 120 560, 60 580" fill="none" stroke="#000" stroke-width="18" stroke-linecap="round"/>
+          <path class="route-draw" d="M760 250 C 700 280, 660 330, 600 360 S 480 400, 400 420 S 260 440, 210 480 S 120 560, 60 580" fill="none" stroke="#f7ff00" stroke-width="9" stroke-linecap="round"/>
+          <g id="map-cars"></g>
         </svg>
-        <div class="phone">
-          <div class="screen">
-            <img src="/assets/screen-planRoute.jpg" alt="" width="720" height="1564">
-            <img src="/assets/screen-tripRoom.jpg" alt="" width="720" height="1564">
-            <img class="current" src="/assets/screen-tripMapGroup.jpg" alt="" width="720" height="1564">
-            <img src="/assets/screen-tripMapOffRoute.jpg" alt="" width="720" height="1564">
-          </div>
+        <div class="eta" aria-hidden="true"><strong id="map-eta">12 min</strong><span>to Pakuwon Mall</span></div>
+      </article>
+
+      <article class="tile sun span-4 tall">
+        <span class="kicker">Trip Room</span>
+        <h3>Join with six numbers.</h3>
+        <p>No accounts to make. Share the code or an invite link, and each car joins with one phone.</p>
+        <div class="code" role="img" aria-label="Example room code 8 9 7 6 5 4">
+          <div class="digit" style="--v:8"><span><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i></span></div>
+          <div class="digit" style="--v:9"><span><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i></span></div>
+          <div class="digit" style="--v:7"><span><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i></span></div>
+          <div class="digit" style="--v:6"><span><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i></span></div>
+          <div class="digit" style="--v:5"><span><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i></span></div>
+          <div class="digit" style="--v:4"><span><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i></span></div>
         </div>
-        <div class="progress"><span></span><span></span><span></span><span></span></div>
+        <div class="join-link">or tap <b>joinlezgo.app/join</b></div>
+      </article>
+
+      <article class="tile span-4 tall">
+        <span class="kicker">Plan</span>
+        <h3>One route for everyone.</h3>
+        <p>Start, stops for fuel or food, destination. Set it once.</p>
+        <div class="phone"><div class="screen"><img src="/assets/app-set-route.jpg" alt="Set Route with a starting point and a destination" width="900" height="1957" loading="lazy"></div></div>
+      </article>
+
+      <article class="tile dark span-4 tall">
+        <span class="kicker">Spoken alerts</span>
+        <h3>Wrong turn? You'll hear it.</h3>
+        <p>Eyes stay on the road. A mute button is always one tap away.</p>
+        <div class="phone"><div class="screen"><img src="/assets/app-off-route.jpg" alt="The trip map with an off-route alert" width="900" height="1957" loading="lazy"></div></div>
+        <div class="alert-pill" aria-hidden="true"><span class="wave"><i></i><i></i><i></i><i></i></span>You're out of the way</div>
+      </article>
+
+      <div class="stack span-4">
+        <article class="tile short">
+          <span class="kicker">Siri</span>
+          <h3>Just ask.</h3>
+          <div class="chat"><span>Where is the group?</span><span class="answer">Agus is 2 km ahead of you.</span></div>
+        </article>
+        <article class="tile short">
+          <span class="kicker">No sign-up</span>
+          <h3>Accounts needed.</h3>
+          <div class="big" aria-label="Zero">0</div>
+        </article>
       </div>
+
+      <article class="tile carplay span-12">
+        <span class="kicker">CarPlay</span>
+        <h3>Your trip on the big screen.</h3>
+        <p>The shared map moves to your car's display with the next turn and your arrival time. A Live Activity keeps the time left on your Lock Screen.</p>
+        <div class="dash"><img src="/assets/screen-carPlayTripMap.jpg" alt="Lezgo on CarPlay: the leader's car on the yellow route, turn right in 2.7 km, arriving at 11.05" width="1568" height="586" loading="lazy"></div>
+      </article>
+
+      <article class="tile span-6 mid">
+        <span class="kicker">Buddies</span>
+        <h3>A buddy for every car.</h3>
+        <p>Each car gets its own colour on the map, so you know who is who at a glance.</p>
+        <div class="crew" aria-hidden="true"><img src="/assets/mascot-pink.png" alt="" width="350" height="370" loading="lazy"><img src="/assets/mascot-blue.png" alt="" width="372" height="367" loading="lazy"><img class="leader" src="/assets/mascot-yellow.png" alt="" width="448" height="351" loading="lazy"><img src="/assets/mascot-purple.png" alt="" width="450" height="375" loading="lazy"><img src="/assets/mascot-green.png" alt="" width="468" height="375" loading="lazy"></div>
+      </article>
+      <article class="tile span-6 mid">
+        <span class="kicker">Leader tools</span>
+        <h3>Hand over the lead. Pick the next stop.</h3>
+        <p>Pass the lead to another car without ending the trip. Arrived early? Choose a new destination and everyone follows.</p>
+        <div class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m3 7 4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></svg></div>
+      </article>
     </div>
-  </div>
-
-  <section class="carplay wrap" aria-labelledby="carplay-title">
-    <div class="carplay-head">
-      <h2 id="carplay-title">Your trip, on your car's screen.</h2>
-      <p>Connect your iPhone and the shared map moves to CarPlay, with the next turn and your arrival time. A Live Activity keeps the time left on your Lock Screen.</p>
-    </div>
-    <figure class="dash">
-      <img src="/assets/screen-carPlayTripMap.jpg" alt="Lezgo on CarPlay: the leader's car on the yellow route, turn right in 2.7 km, arriving at 11.05" width="1568" height="586" loading="lazy">
-    </figure>
   </section>
 
-  <section class="more wrap" aria-labelledby="more-title">
-    <h2 id="more-title">And a few more things.</h2>
-  </section>
-
-  <section class="features wrap" aria-label="More features">
-    <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1a7 7 0 0 0 6-6.9z"/></svg><h3>Siri</h3><p>Ask Siri about your trip while you drive.</p></div>
-    <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.4 10A7.5 7.5 0 0 0 5.2 8 6 6 0 0 0 6 20h13a5 5 0 0 0 .4-10z"/></svg><h3>No sign-up</h3><p>Trips are shared through iCloud. No accounts to make and no ads.</p></div>
-    <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m3 7 4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></svg><h3>Hand over the lead</h3><p>The leader can pass the lead to another car without ending the trip.</p></div>
-    <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><h3>New destination</h3><p>Arrived early? The leader picks the next stop and everyone follows.</p></div>
-  </section>
-
-  <section class="closing wrap" aria-labelledby="closing-title">
-    <img class="icon" src="/assets/app-icon-180.png" alt="" width="180" height="180">
-    <h2 id="closing-title">Planning a trip with friends?</h2>
-    <p>Lezgo is free for iPhone. It needs an iCloud account and location access while the trip is open.</p>
-    <a class="store" href="https://apps.apple.com/app/id6826083177">Download on the App Store</a>
-    <div class="crew" aria-hidden="true">
-      <img src="/assets/mascot-pink.png" alt="" width="350" height="370">
-      <img src="/assets/mascot-blue.png" alt="" width="372" height="367">
-      <img class="leader" src="/assets/mascot-yellow.png" alt="" width="448" height="351">
-      <img src="/assets/mascot-purple.png" alt="" width="450" height="375">
-      <img src="/assets/mascot-green.png" alt="" width="468" height="375">
+  <section class="faq wrap" id="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions</h2>
+    <div>
+      <details open><summary>Does everyone in the car need the app?</summary><p>No. One person per car joins the trip, usually the driver or the passenger holding the phone.</p></details>
+      <details><summary>What if the leader has to leave?</summary><p>The leader can hand over the lead first. If the leader leaves without doing that, the trip ends for everyone.</p></details>
+      <details><summary>Do I need an account?</summary><p>No. Lezgo uses your iCloud account and needs location access only while the trip is open.</p></details>
+      <details><summary>Does it work with CarPlay?</summary><p>Yes. Plug in your iPhone and the shared map appears on your car's screen.</p></details>
     </div>
   </section>
 </main>
 
-  <footer class="footer wrap">
-    <span>© 2026 Nathan Sudiara</span>
-    <nav aria-label="Footer"><a href="/support">Support</a><a href="/privacy">Privacy Policy</a><a href="mailto:contact@joinlezgo.app">contact@joinlezgo.app</a></nav>
-  </footer>
+  <div class="finale">
+    <section class="closing wrap" aria-labelledby="closing-title">
+      <img class="icon" src="/assets/app-icon-180.png" alt="" width="180" height="180" loading="lazy">
+      <h2 id="closing-title">Planning a trip with friends?</h2>
+      <p>Lezgo is free for iPhone. It needs an iCloud account and location access while the trip is open.</p>
+      <a class="store" href="https://apps.apple.com/app/id6826083177"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.8-1-2.8-4.2zM14 5.3c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>Download on the App Store</a>
+    </section>
+    <footer class="footer">
+      <div class="wrap">
+        <span>© 2026 Nathan Sudiara</span>
+        <nav aria-label="Footer"><a href="/support">Support</a><a href="/privacy">Privacy Policy</a><a href="mailto:contact@joinlezgo.app">contact@joinlezgo.app</a></nav>
+      </div>
+    </footer>
+  </div>
 
   <script src="/assets/vendor/gsap.min.js" defer></script>
   <script src="/assets/vendor/ScrollTrigger.min.js" defer></script>
-  <script src="/assets/vendor/SplitText.min.js" defer></script>
   <script src="/main.js" defer></script>
 </body>
 </html>
