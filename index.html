@@ -51,24 +51,28 @@
           <div class="step-head"><span class="count">Stop 1 of 4</span><span class="place">Before you leave</span></div>
           <h2 id="b1">The leader plans the route once.</h2>
           <p>Pick a start point, add checkpoints for fuel or food, and set the destination. Lezgo draws the route the whole group will follow.</p>
+          <figure class="inline-phone"><img src="/assets/screen-draftTripLeader.jpg" alt="The Draft Road Trip screen with the route from Universitas Ciputra to Ciputra World Surabaya" width="506" height="1100" loading="lazy"></figure>
         </section>
         <section class="step" data-screen="1" aria-labelledby="b2">
           <span class="pin" aria-hidden="true"></span>
           <div class="step-head"><span class="count">Stop 2 of 4</span><span class="place">In the Trip Room</span></div>
           <h2 id="b2">Everyone joins with a 6-digit code.</h2>
           <p>Share the room code or an invite link. Each car joins with one phone, and the group checks the route and who is coming before setting off.</p>
+          <figure class="inline-phone"><img src="/assets/screen-tripRoomLeader.jpg" alt="The Trip Room with the route overview and participants Agus, Budi and Citra" width="506" height="1100" loading="lazy"></figure>
         </section>
         <section class="step" data-screen="2" aria-labelledby="b3">
           <span class="pin" aria-hidden="true"></span>
           <div class="step-head"><span class="count">Stop 3 of 4</span><span class="place">On the road</span></div>
           <h2 id="b3">Every car on one map.</h2>
           <p>Everyone follows the same turn-by-turn route. Tap a car to see its driver, street and arrival time.</p>
+          <figure class="inline-phone"><img src="/assets/screen-tripMapMemberGroup.jpg" alt="The trip map with Agus leading, Citra behind him and you following, 6 minutes from Ciputra World Surabaya" width="506" height="1100" loading="lazy"></figure>
         </section>
         <section class="step" data-screen="3" aria-labelledby="b4">
           <span class="pin" aria-hidden="true"></span>
           <div class="step-head"><span class="count">Stop 4 of 4</span><span class="place">If something changes</span></div>
           <h2 id="b4">A wrong turn gets caught right away.</h2>
           <p>The driver hears about it as it happens. If the leader changes roads, the route is recalculated for everyone.</p>
+          <figure class="inline-phone"><img src="/assets/screen-tripMapMemberOffRoute.jpg" alt="The trip map with the alert: You're out of the way" width="506" height="1100" loading="lazy"></figure>
         </section>
       </div>
     </div>
@@ -88,7 +92,7 @@
           <div class="screen">
             <img src="/assets/screen-draftTripLeader.jpg" alt="" width="506" height="1100">
             <img src="/assets/screen-tripRoomLeader.jpg" alt="" width="506" height="1100">
-            <img class="current" src="/assets/screen-tripMapLeader.jpg" alt="" width="506" height="1100">
+            <img class="current" src="/assets/screen-tripMapMemberGroup.jpg" alt="" width="506" height="1100">
             <img src="/assets/screen-tripMapMemberOffRoute.jpg" alt="" width="506" height="1100">
           </div>
         </div>
@@ -110,66 +114,27 @@
   <section class="hear wrap" aria-labelledby="hear-title">
     <div class="hear-copy">
       <h2 id="hear-title">Alerts you hear, not read.</h2>
-      <p>Drivers keep their eyes on the road. When something changes, Lezgo says it out loud and shows a large banner over the map.</p>
-      <p class="note"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg>Pick an alert to hear it. One tap mutes them all.</p>
+      <p>Drivers keep their eyes on the road. When something changes, Lezgo says it out loud and shows it at the top of the map. One tap on the speaker mutes it.</p>
+      <ul class="alert-list" aria-label="Lezgo's alerts">
+          <li><button type="button" data-say="You're out of the way" style="--tone: var(--pink)"><i aria-hidden="true"></i><span><strong>You're out of the way</strong><small>When you leave the route</small></span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button></li>
+          <li><button type="button" data-say="You pass a checkpoint" style="--tone: var(--blue)"><i aria-hidden="true"></i><span><strong>You pass a checkpoint</strong><small>At each stop the leader added</small></span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button></li>
+          <li><button type="button" data-say="You Precede The Leader" style="--tone: var(--purple)"><i aria-hidden="true"></i><span><strong>You Precede The Leader</strong><small>When you drive ahead of the lead car</small></span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button></li>
+          <li><button type="button" data-say="Route updated" style="--tone: var(--green)"><i aria-hidden="true"></i><span><strong>Route updated</strong><small>When the leader changes the route</small></span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg></button></li>
+      </ul>
+      <p class="note" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg>Tap an alert to hear how it sounds.</p>
     </div>
-    <div class="windshield" style="--tone: var(--pink)">
-      <svg class="map" viewBox="0 0 800 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <rect width="800" height="640" fill="#1d2532"/>
-        <g fill="none" stroke="#2a3444" stroke-linecap="round">
-          <path stroke-width="30" d="M-20 300 C 200 270, 420 380, 820 330"/>
-          <path stroke-width="18" d="M160 -20 C 200 240, 110 460, 190 660"/>
-          <path stroke-width="18" d="M610 -20 C 560 220, 660 430, 600 660"/>
-          <path stroke-width="12" d="M-20 520 C 260 490, 520 560, 820 520"/>
-          <path stroke-width="10" d="M400 -20 L 430 660"/>
-          <path stroke-width="8" d="M-20 140 C 300 120, 560 170, 820 110"/>
-        </g>
-        <path d="M410 680 C 420 520, 380 420, 430 330 S 560 200, 620 -20" fill="none" stroke="#000" stroke-width="22" stroke-linecap="round"/>
-        <path d="M410 680 C 420 520, 380 420, 430 330 S 560 200, 620 -20" fill="none" stroke="#f7ff00" stroke-width="12" stroke-linecap="round"/>
-        <g transform="translate(426 446)"><rect x="-2" y="-34" width="4" height="34" fill="#fff"/><path d="M2 -34h22l-5 7 5 7H2z" fill="#3d99fc"/></g>
-        <g transform="translate(432 330)"><circle r="22" fill="#000"/><circle r="15" fill="#f7ff00"/></g>
-        <g class="map-car" transform="translate(250 312)"><circle r="40" fill="var(--tone, #ff3fa6)" opacity=".25"/><circle r="22" fill="#000"/><circle r="15" fill="var(--tone, #ff3fa6)"/></g>
-        <g transform="translate(410 560)"><circle r="18" fill="#000"/><circle r="12" fill="#3d99fc"/></g>
-      </svg>
-      <div class="banner" role="status" aria-live="polite">
-        <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22zm1 15h-2v-2h2zm0-4h-2V9h2z"/></svg></span>
-        <div><strong>You're out of the way.</strong><small>When you leave the route</small></div>
-        <span class="wave" aria-hidden="true"></span>
-      </div>
-      <div class="controls" hidden>
-        <div class="picks" role="group" aria-label="Choose an alert">
-          <button type="button" aria-pressed="true" data-tone="--pink" data-say="You're out of the way." data-when="When you leave the route" data-icon="warn" data-at="250 312"><i style="background: var(--pink)"></i>Off route</button>
-          <button type="button" aria-pressed="false" data-tone="--blue" data-say="You passed a checkpoint." data-when="At each stop the leader added" data-icon="flag" data-at="408 446"><i style="background: var(--blue)"></i>Checkpoint</button>
-          <button type="button" aria-pressed="false" data-tone="--purple" data-say="You're ahead of the leader." data-when="When you pass the lead car" data-icon="ahead" data-at="482 252"><i style="background: var(--purple)"></i>Ahead</button>
-          <button type="button" aria-pressed="false" data-tone="--green" data-say="The route was updated." data-when="When the leader changes roads" data-icon="route" data-at="414 392"><i style="background: var(--green)"></i>New route</button>
-        </div>
-        <button class="mute" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4z"/></svg><span>Sound on</span></button>
-      </div>
+    <div class="hear-phone" aria-hidden="true">
+      <div class="phone"><div class="screen"><img class="current" src="/assets/screen-tripMapMemberOffRoute.jpg" alt="" width="506" height="1100" loading="lazy"></div></div>
     </div>
   </section>
 
-  <section class="carplay wrap" aria-labelledby="carplay-title">
-    <div class="carplay-head">
-      <h2 id="carplay-title">Your trip, on your car's screen.</h2>
-      <p>Connect your iPhone and the shared map moves to CarPlay. A Live Activity keeps the time left on your Lock Screen.</p>
-    </div>
-    <div class="dash" aria-hidden="true">
-      <div class="dash-screen">
-        <div class="dash-side">
-          <div><svg class="turn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V11a3 3 0 0 1 3-3h9M14 4l4 4-4 4"/></svg><strong>3,5 km</strong><span>Turn right on Jalan Kedungsari</span></div>
-          <div><strong>12 min</strong><span>To Pakuwon Mall</span></div>
-        </div>
-        <svg class="dash-map" viewBox="0 0 700 270" preserveAspectRatio="xMidYMid slice">
-          <rect width="700" height="270" fill="#1d2532"/>
-          <g fill="none" stroke="#2a3444" stroke-linecap="round"><path stroke-width="16" d="M-20 80 C 200 60, 420 140, 720 100"/><path stroke-width="10" d="M160 -20 L 200 300"/><path stroke-width="8" d="M480 -20 C 450 120, 540 200, 500 300"/><path stroke-width="6" d="M-20 210 L 720 230"/></g>
-          <path id="dash-route" d="M40 300 C 120 220, 200 200, 300 170 S 470 140, 560 60 S 640 -10, 720 -20" fill="none" stroke="#f7ff00" stroke-width="8" stroke-linecap="round"/>
-          <circle id="dash-car" r="11" fill="#f7ff00" stroke="#000" stroke-width="4" cx="0" cy="0"/>
-        </svg>
-      </div>
-    </div>
+  <section class="more wrap" aria-labelledby="more-title">
+    <h2 id="more-title">Made for the road.</h2>
   </section>
 
   <section class="features wrap" aria-label="More features">
+    <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11 6.5 6.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11a2 2 0 0 1 2 2v5h-2v2h-3v-2H8v2H5v-2H3v-5a2 2 0 0 1 2-2zm2.2 0h9.6l-1-3H8.2zM6.5 16a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm11 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg><h3>CarPlay</h3><p>The trip map appears on your car's screen when your iPhone is connected.</p></div>
+    <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 1h10a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zm0 4v14h10V5zm2 9h6v3H9z"/></svg><h3>Lock Screen</h3><p>A Live Activity keeps the trip and the time left on your Lock Screen.</p></div>
     <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1a7 7 0 0 0 6-6.9z"/></svg><h3>Siri</h3><p>Ask Siri about your trip while you drive.</p></div>
     <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.4 10A7.5 7.5 0 0 0 5.2 8 6 6 0 0 0 6 20h13a5 5 0 0 0 .4-10z"/></svg><h3>No sign-up</h3><p>Trips are shared through iCloud. No accounts to make and no ads.</p></div>
     <div><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m3 7 4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></svg><h3>Hand over the lead</h3><p>The leader can pass the lead to another car without ending the trip.</p></div>
@@ -199,8 +164,6 @@
   <script src="/assets/vendor/gsap.min.js" defer></script>
   <script src="/assets/vendor/ScrollTrigger.min.js" defer></script>
   <script src="/assets/vendor/SplitText.min.js" defer></script>
-  <script src="/assets/vendor/DrawSVGPlugin.min.js" defer></script>
-  <script src="/assets/vendor/MotionPathPlugin.min.js" defer></script>
   <script src="/assets/vendor/lenis.min.js" defer></script>
   <script src="/main.js" defer></script>
 </body>
