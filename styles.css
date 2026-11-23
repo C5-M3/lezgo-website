@@ -162,9 +162,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tile .phone { --w: min(76%, 290px); margin: auto auto calc(var(--w) * -1.05); transition: transform 1.2s var(--ease); }
 .motion .tile .phone { transform: translateY(14%); }
 .motion .tile.shown .phone { transform: none; }
-.alert-pill { position: absolute; z-index: 3; left: 50%; bottom: 30%; transform: translateX(-50%); background: #000; color: var(--brand); padding: 10px 16px; border-radius: 999px; font-weight: 700; font-size: .9rem; display: flex; gap: 8px; align-items: center; white-space: nowrap; box-shadow: 0 10px 30px rgba(0, 0, 0, .5); }
-.shown .alert-pill { animation: nudge 2.8s var(--ease) 1s infinite; }
-@keyframes nudge { 0%, 70%, 100% { transform: translateX(-50%) scale(1); } 78% { transform: translateX(-50%) scale(1.08); } 86% { transform: translateX(-50%) scale(.98); } }
+/* spoken alerts tile: what Lezgo says, beside the text instead of over the phone, which already shows the banner */
+.voice { display: inline-flex; align-items: center; gap: 10px; width: fit-content; margin-top: 18px; padding: 8px 14px; border-radius: 999px; background: rgba(247, 255, 0, .12); color: var(--brand); font-weight: 700; font-size: .95rem; }
 .wave { display: flex; gap: 4px; align-items: center; height: 18px; }
 .wave i { width: 3px; height: 40%; background: currentColor; border-radius: 2px; }
 .shown .wave i { animation: wave 1s ease-in-out infinite; }
