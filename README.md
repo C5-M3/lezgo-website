@@ -10,7 +10,7 @@ The public website for the Lezgo iOS app, served at **https://joinlezgo.app**. T
 | `/join?code=897654` | Invite link to a trip | Shared from the app's Trip Room. Opens Lezgo when it is installed (universal link), otherwise shows the room code |
 | `/.well-known/apple-app-site-association` | Lists the app IDs that open `/join` links | iOS, when Lezgo is installed |
 
-It is plain HTML and CSS with no build step. `main.js` adds the landing page's scroll motion with [GSAP](https://gsap.com) and [Lenis](https://lenis.darkroom.engineering), saved in `assets/vendor/` (GSAP 3.13.0 with ScrollTrigger and SplitText, Lenis 1.1.18) so the site loads no outside scripts. Every page still works without JavaScript. Colors, logo and mascots come from the app's asset catalog in [C5-M3/Lezgo](https://github.com/C5-M3/Lezgo) (`Lezgo/Resources/Assets.xcassets`); the screenshots come from the app's debug screens.
+It is plain HTML and CSS with no build step. `main.js` adds the landing page's scroll motion with [GSAP](https://gsap.com), saved in `assets/vendor/` (GSAP 3.13.0 with ScrollTrigger and SplitText) so the site loads no outside scripts. Scrolling itself stays the browser's own. Every page still works without JavaScript. Colors, logo and mascots come from the app's asset catalog in [C5-M3/Lezgo](https://github.com/C5-M3/Lezgo) (`Lezgo/Resources/Assets.xcassets`); the screenshots come from the app's debug screens.
 
 ## Run it locally
 
