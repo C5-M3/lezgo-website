@@ -1,20 +1,15 @@
 /* Lezgo website: pitch black with brand yellow ("Midnight").
-   Colors come from the app's asset catalog (BrandYellow and the crew colors).
+   Colors come from the app's asset catalog (BrandYellow and the night map).
    The landing page's motion lives in main.js; every page reads fine without it. */
 
 :root {
   --black: #000000;
   --panel: #0d0d0d;      /* raised surfaces */
-  --panel-hi: #171717;
   --line: #262626;       /* hairlines and the unfilled route */
   --ink: #ffffff;
   --ink-soft: #a1a1a1;
   --signal: #f7ff00;     /* BrandYellow */
   --map: #1d2532;        /* the app's night map */
-  --pink: #ff3fa6;
-  --blue: #3d99fc;
-  --purple: #a178ff;
-  --green: #7ff19b;
   --type: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
   --gutter: clamp(16px, 5vw, 80px);
   color-scheme: dark;
@@ -147,40 +142,6 @@ html:not(.motion) .rail { display: none; }
   .step p { font-size: .96rem; }
 }
 
-/* room code */
-.code { padding-block: clamp(96px, 12vw, 160px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; border-top: 1px solid var(--line); }
-.code h2 { font-size: clamp(2.4rem, 5.4vw, 4.6rem); }
-.code p { color: var(--ink-soft); margin: 20px 0 0; max-width: 28rem; }
-.digits { display: flex; gap: clamp(6px, 1.2vw, 12px); }
-.digits span { flex: 1; max-width: 92px; aspect-ratio: 3 / 4; display: grid; place-items: center; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); font-size: clamp(2.2rem, 5.6vw, 4.4rem); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-.digits span.set { border-color: var(--signal); color: var(--signal); }
-@media (max-width: 860px) { .code { grid-template-columns: minmax(0, 1fr); } }
-
-/* alerts: the app's real off-route screen beside the four alerts, in the app's own words */
-.hear { padding-block: clamp(96px, 12vw, 160px); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(40px, 6vw, 96px); align-items: center; border-top: 1px solid var(--line); }
-.hear h2 { font-size: clamp(2.4rem, 5.4vw, 4.6rem); }
-.hear-copy > p { color: var(--ink-soft); margin: 20px 0 0; max-width: 30rem; }
-.alert-list { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 10px; max-width: 34rem; }
-.alert-list button { width: 100%; display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 14px 18px; border-radius: 20px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: border-color .2s, background-color .2s; }
-.alert-list button:hover { border-color: #3a3a3a; }
-.alert-list button[aria-pressed="true"] { border-color: var(--tone); background: var(--panel-hi); }
-.alert-list i { flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--tone); }
-.alert-list span { flex: 1; min-width: 0; }
-.alert-list strong { display: block; font-size: 1.1rem; line-height: 1.25; }
-.alert-list small { display: block; color: var(--ink-soft); font-size: .95rem; }
-.alert-list svg { flex: none; width: 22px; height: 22px; color: var(--ink-soft); }
-.alert-list button[aria-pressed="true"] svg { color: var(--tone); }
-.hear-copy .note { display: flex; gap: 10px; align-items: center; margin-top: 20px; color: var(--ink-soft); font-size: 1rem; }
-.hear-copy .note[hidden] { display: none; }
-.hear-copy .note svg { width: 20px; height: 20px; color: var(--signal); flex: none; }
-.hear-phone { display: grid; justify-items: center; }
-.hear-phone .phone { width: min(320px, 70vw); }
-@media (max-width: 860px) {
-  .hear { grid-template-columns: minmax(0, 1fr); }
-  /* Stop 4 just showed this same screen on phones, so it is not repeated here. */
-  .hear-phone { display: none; }
-}
-
 /* CarPlay: the real CarPlay screen in a dashboard bezel */
 .carplay { padding-block: clamp(96px, 12vw, 160px); border-top: 1px solid var(--line); }
 .carplay-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; margin-bottom: 44px; }
@@ -235,6 +196,8 @@ html:not(.motion) .rail { display: none; }
 .contact p { margin: 0; }
 
 /* Join: the room code from the invite link, in the same tiles as the landing page. */
+.digits { display: flex; gap: clamp(6px, 1.2vw, 12px); }
+.digits span { flex: 1; max-width: 92px; aspect-ratio: 3 / 4; display: grid; place-items: center; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); font-size: clamp(2.2rem, 5.6vw, 4.4rem); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
 .join .digits { max-width: 560px; margin-bottom: 36px; }
 .join .digits[hidden] { display: none; }
 .join .digits span { border-color: var(--signal); color: var(--signal); }

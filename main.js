@@ -1,6 +1,5 @@
 // Landing page motion. GSAP is saved in /assets/vendor so the site loads no outside scripts. Scrolling stays the
-// browser's own. Without this file the page still works: the four stops are a plain list beside the phone, and the
-// alerts are listed in the app's own words.
+// browser's own. Without this file the page still works: the four stops are a plain list beside the phone.
 (() => {
   if (!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -52,62 +51,29 @@
   const rail = document.querySelector(".rail");
   const fill = document.querySelector(".rail-fill");
   const car = document.querySelector(".rail-car");
+  // Each stop holds for a quarter of the scroll; the rail fills smoothly between them.
+  function followScroll(self) {
+    if (self.progress === 0 && self.scroll() < self.start) return;
+    const index = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
+    showStep(index);
+    showScreen(Number(steps[index].dataset.screen));
+    const along = Math.min(1, Math.max(0, (self.progress * steps.length - 0.5) / (steps.length - 1)));
+    gsap.set(fill, { scaleY: along });
+    gsap.set(car, { y: along * rail.offsetHeight });
+  }
   ScrollTrigger.create({
     trigger: ".steps",
     start: () => `top ${parseFloat(getComputedStyle(pinned).top) || 0}px`,
     end: "bottom bottom",
     invalidateOnRefresh: true,
-    onUpdate: self => {
-      // Each stop holds for a quarter of the scroll; the rail fills smoothly between them.
-      const index = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
-      showStep(index);
-      showScreen(Number(steps[index].dataset.screen));
-      const travelled = Math.min(1, self.progress * steps.length / (steps.length - 1) - 0.5 / (steps.length - 1));
-      const along = Math.max(0, travelled);
-      gsap.set(fill, { scaleY: along });
-      gsap.set(car, { y: along * rail.offsetHeight });
-    },
+    onUpdate: followScroll,
+    // A reload or a jump past the stops lands without an update, so sync on refresh too.
+    onRefresh: followScroll,
     onLeaveBack: () => {
       showScreen(heroScreen);
       progress.forEach(bar => bar.classList.remove("on"));
     }
   });
-
-  // Room code: digits flicker through numbers and lock in, left to right.
-  const digits = gsap.utils.toArray(".code .digits span");
-  ScrollTrigger.create({ trigger: ".code .digits", start: "top 80%", once: true, onEnter: () => {
-    if (reduce) {
-      digits.forEach(digit => digit.classList.add("set"));
-      return;
-    }
-    digits.forEach((digit, index) => {
-      const final = digit.textContent;
-      const state = { t: 0 };
-      gsap.to(state, { t: 1, duration: 0.5 + index * 0.14, ease: "none",
-        onUpdate: () => { digit.textContent = state.t < 1 ? Math.floor(Math.random() * 10) : final; },
-        onComplete: () => {
-          digit.textContent = final;
-          digit.classList.add("set");
-          gsap.fromTo(digit, { scale: 1.08 }, { scale: 1, duration: 0.4, ease: "back.out(3)" });
-        } });
-    });
-  } });
-
-  // Alerts: tapping one says it out loud, the way the app does on the road.
-  const alertButtons = Array.from(document.querySelectorAll(".alert-list button"));
-  if ("speechSynthesis" in window) {
-    document.querySelector(".hear-copy .note").hidden = false;
-    alertButtons.forEach(button => button.addEventListener("click", () => {
-      alertButtons.forEach(other => other.setAttribute("aria-pressed", other === button ? "true" : "false"));
-      try {
-        speechSynthesis.cancel();
-        speechSynthesis.speak(new SpeechSynthesisUtterance(button.dataset.say));
-      } catch {
-        // Speech is a nice extra; the words are already on screen.
-      }
-    }));
-    alertButtons.forEach(button => button.setAttribute("aria-pressed", "false"));
-  }
 
   if (reduce) return;
 
