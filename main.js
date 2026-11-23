@@ -1,9 +1,9 @@
 // Landing page motion. GSAP and Lenis are saved in /assets/vendor so the site loads no outside scripts.
 // Without this file the page still works: the phone shows the trip map, the route is drawn
-// and the alert banner shows its first alert.
+// and the alerts are listed in the app's own words.
 (() => {
   if (!window.gsap || !window.ScrollTrigger) return;
-  gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin);
+  gsap.registerPlugin(ScrollTrigger, SplitText);
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Header gets a hairline once the page scrolls.
@@ -49,8 +49,13 @@
   }
   const layouts = gsap.matchMedia();
   layouts.add("(min-width: 861px)", () => storyTriggers("55%"));
-  // On phones the sticky phone covers the top half, so a stop counts once it is lower down.
-  layouts.add("(max-width: 860px)", () => storyTriggers("78%"));
+  layouts.add("(max-width: 860px)", () => {
+    storyTriggers("70%");
+    // On phones each stop has its own screen; it rises into place as the stop arrives.
+    if (reduce) return;
+    gsap.utils.toArray(".inline-phone").forEach(phone => gsap.from(phone, { y: 60, autoAlpha: 0, rotation: 3, duration: 0.9, ease: "back.out(1.4)",
+      scrollTrigger: { trigger: phone, start: "top 92%" } }));
+  });
 
   // Room code: digits flicker through numbers and lock in, left to right.
   const digits = gsap.utils.toArray(".code .digits span");
@@ -72,95 +77,21 @@
     });
   } });
 
-  // Alerts demo: picking an alert swaps the banner and speaks it, unless muted.
-  const icons = {
-    warn: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22zm1 15h-2v-2h2zm0-4h-2V9h2z"/></svg>',
-    flag: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h2v20H5zM8 3h12l-2.5 4.5L20 12H8z"/></svg>',
-    ahead: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 4 11h5v10h6V11h5z"/></svg>',
-    route: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.4A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.8-4.2L13 11h7V4z"/></svg>'
-  };
-  const windshield = document.querySelector(".windshield");
-  const banner = windshield.querySelector(".banner");
-  const badge = banner.querySelector(".badge");
-  const wave = banner.querySelector(".wave");
-  for (let i = 0; i < 9; i++) wave.appendChild(document.createElement("span"));
-  const waveBars = Array.from(wave.children);
-  const picks = Array.from(windshield.querySelectorAll(".picks button"));
-  const muteButton = windshield.querySelector(".mute");
-  windshield.querySelector(".controls").hidden = false;
-  let muted = false;
-  let waveTween = null;
-  let cycle = null;
-  let userTouched = false;
-  gsap.set(".map-car", { x: 250, y: 312 });
-
-  function speak(text) {
-    try {
-      if (muted || !("speechSynthesis" in window)) return;
-      speechSynthesis.cancel();
-      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-    } catch {
-      // Speech is a nice extra; the banner already shows the alert.
-    }
+  // Alerts: tapping one says it out loud, the way the app does on the road.
+  const alertButtons = Array.from(document.querySelectorAll(".alert-list button"));
+  if ("speechSynthesis" in window) {
+    document.querySelector(".hear-copy .note").hidden = false;
+    alertButtons.forEach(button => button.addEventListener("click", () => {
+      alertButtons.forEach(other => other.setAttribute("aria-pressed", other === button ? "true" : "false"));
+      try {
+        speechSynthesis.cancel();
+        speechSynthesis.speak(new SpeechSynthesisUtterance(button.dataset.say));
+      } catch {
+        // Speech is a nice extra; the words are already on screen.
+      }
+    }));
+    alertButtons.forEach(button => button.setAttribute("aria-pressed", "false"));
   }
-  function showAlert(button, withVoice) {
-    picks.forEach(pick => pick.setAttribute("aria-pressed", pick === button ? "true" : "false"));
-    const swap = () => {
-      windshield.style.setProperty("--tone", `var(${button.dataset.tone})`);
-      badge.innerHTML = icons[button.dataset.icon];
-      banner.querySelector("strong").textContent = button.dataset.say;
-      banner.querySelector("small").textContent = button.dataset.when;
-    };
-    if (reduce) {
-      swap();
-    } else {
-      gsap.timeline()
-        .to(banner, { y: -24, autoAlpha: 0, duration: 0.2, ease: "power2.in" })
-        .add(swap)
-        .fromTo(banner, { y: -40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55, ease: "back.out(1.6)" })
-        .fromTo(badge, { scale: 0.4 }, { scale: 1, duration: 0.5, ease: "back.out(3)" }, "<0.1");
-    }
-    const [x, y] = button.dataset.at.split(" ").map(Number);
-    gsap.to(".map-car", { x, y, duration: reduce ? 0 : 0.9, ease: "power3.inOut" });
-    waveTween?.kill();
-    if (!reduce && !muted) {
-      waveTween = gsap.to(waveBars, { scaleY: () => gsap.utils.random(0.25, 1), duration: 0.14, repeat: 12, yoyo: true, repeatRefresh: true,
-        stagger: { each: 0.03, from: "center" }, onComplete: () => gsap.to(waveBars, { scaleY: 0.15, duration: 0.3 }) });
-    }
-    if (withVoice) speak(button.dataset.say);
-  }
-  picks.forEach(button => button.addEventListener("click", () => {
-    userTouched = true;
-    clearInterval(cycle);
-    showAlert(button, true);
-  }));
-  muteButton.addEventListener("click", () => {
-    muted = !muted;
-    muteButton.setAttribute("aria-pressed", String(muted));
-    muteButton.querySelector("span").textContent = muted ? "Muted" : "Sound on";
-    banner.classList.toggle("muted", muted);
-    if (!muted) return;
-    try { speechSynthesis.cancel(); } catch { /* speech is optional */ }
-    waveTween?.kill();
-    gsap.set(waveBars, { scaleY: 0.15 });
-  });
-  // While the section is on screen and nobody has tapped yet, the banner cycles silently through the alerts.
-  if (!reduce) {
-    ScrollTrigger.create({ trigger: windshield, start: "top 75%", end: "bottom 25%",
-      onToggle: self => {
-        clearInterval(cycle);
-        if (!self.isActive || userTouched) return;
-        let index = picks.findIndex(pick => pick.getAttribute("aria-pressed") === "true");
-        cycle = setInterval(() => {
-          index = (index + 1) % picks.length;
-          showAlert(picks[index], false);
-        }, 2800);
-      } });
-  }
-
-  // CarPlay car sits partway along its route at rest.
-  const dashPath = { path: "#dash-route", align: "#dash-route", alignOrigin: [0.5, 0.5] };
-  gsap.set("#dash-car", { motionPath: { ...dashPath, start: 0, end: 0.6 } });
 
   if (reduce) return;
 
@@ -197,12 +128,6 @@
     button.addEventListener("pointerdown", () => gsap.to(button, { scale: 0.96, duration: 0.12, ease: "power2.out" }));
     ["pointerup", "pointerleave"].forEach(type => button.addEventListener(type, () => gsap.to(button, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.4)" })));
   });
-
-  // CarPlay: the route draws and the car drives it as the dashboard scrolls past.
-  gsap.timeline({ scrollTrigger: { trigger: ".dash", start: "top 85%", end: "bottom 35%", scrub: 0.8 } })
-    .from("#dash-route", { drawSVG: "0%", ease: "none" })
-    .fromTo("#dash-car", { motionPath: { ...dashPath, start: 0.02, end: 0.02 } },
-      { motionPath: { ...dashPath, start: 0.02, end: 0.6 }, ease: "none" }, 0);
 
   // The crew hops up one after another when the closing comes into view.
   gsap.from(".crew img", { y: 40, autoAlpha: 0, stagger: 0.08, duration: 0.8, ease: "back.out(2)",
