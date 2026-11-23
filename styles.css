@@ -1,213 +1,304 @@
-/* Lezgo website: pitch black with brand yellow ("Midnight").
-   Colors come from the app's asset catalog (BrandYellow and the night map).
-   The landing page's motion lives in main.js; every page reads fine without it. */
+/* Lezgo website: "Showroom". A calm product page in the visitor's light or dark mode, with brand yellow only
+   where the app itself is yellow. Colors, logo and mascots come from the app's asset catalog; the app's screens
+   are simulator screenshots shown in one CSS iPhone frame that draws the Dynamic Island the same way on every
+   screen. The landing page's motion lives in main.js; every page reads fine without it. */
 
 :root {
-  --black: #000000;
-  --panel: #0d0d0d;      /* raised surfaces */
-  --line: #262626;       /* hairlines and the unfilled route */
-  --ink: #ffffff;
-  --ink-soft: #a1a1a1;
-  --signal: #f7ff00;     /* BrandYellow */
-  --map: #1d2532;        /* the app's night map */
-  --type: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --gutter: clamp(16px, 5vw, 80px);
-  color-scheme: dark;
+  --bg: #ffffff;
+  --tile: #f5f5f3;
+  --ink: #111114;
+  --soft: #66666e;
+  --line: #e6e6e1;
+  --brand: #f7ff00;      /* BrandYellow */
+  --night: #1d2532;      /* the app's night map */
+  --street: #34405a;
+  --type: "Plus Jakarta Sans", "Helvetica Neue", Arial, sans-serif;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --header: 57px;
+  --screen: calc(100svh - var(--header));
+  --gutter: max(20px, env(safe-area-inset-left, 0px));
+  --gutter-end: max(20px, env(safe-area-inset-right, 0px));
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #000000; --tile: #161618; --ink: #f5f5f2; --soft: #9d9da6; --line: #26262a; }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; background: var(--black); }
-body { margin: 0; background: var(--black); color: var(--ink); font-family: var(--type); font-size: 1.125rem; line-height: 1.6; overflow-x: clip; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); scroll-padding-top: var(--header); }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--type); font-size: 1.1rem; line-height: 1.6; overflow-x: clip; -webkit-font-smoothing: antialiased; }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
-a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outline-offset: 4px; border-radius: 12px; }
-h1, h2, h3 { margin: 0; font-weight: 800; line-height: 1; letter-spacing: -0.04em; text-wrap: balance; }
-::selection { background: var(--signal); color: var(--black); }
-.wrap { padding-left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 10px; }
+h1, h2, h3 { margin: 0; font-weight: 800; line-height: 1.04; letter-spacing: -0.035em; text-wrap: balance; }
+::selection { background: var(--brand); color: #000; }
+.wrap { width: 100%; max-width: 1120px; margin-inline: auto; padding-left: var(--gutter); padding-right: var(--gutter-end); }
 
-.skip { position: absolute; left: 16px; top: -80px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: var(--signal); color: var(--black); font-weight: 700; text-decoration: none; }
+.skip { position: absolute; left: 16px; top: -80px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: var(--brand); color: #000; font-weight: 700; text-decoration: none; }
 .skip:focus { top: 16px; }
 
-/* header */
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--black); }
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; background: rgba(0, 0, 0, .78); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); border-bottom: 1px solid transparent; transition: border-color .3s; }
-.top.scrolled { border-bottom-color: var(--line); }
-.top img { width: 96px; }
-.top nav { display: flex; align-items: center; gap: 24px; font-weight: 500; font-size: .98rem; }
-.top nav a { text-decoration: none; color: var(--ink-soft); }
-.top nav a:hover, .top nav a[aria-current="page"] { color: var(--ink); }
-.top .get { display: inline-flex; align-items: center; min-height: 44px; background: var(--signal); color: var(--black); padding: 0 18px; border-radius: 999px; font-weight: 700; }
-.top .get:hover { color: var(--black); background: #fff; }
-@media (max-width: 600px) { .top nav a:not(.get) { display: none; } }
-
 /* buttons */
-.store { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 26px; border-radius: 18px; background: var(--signal); color: var(--black); font-weight: 700; text-decoration: none; }
-.store svg { width: 20px; height: 20px; }
-.store:hover { background: #fff; }
-.ghost { display: inline-flex; align-items: center; min-height: 56px; padding: 0 22px; border-radius: 18px; border: 1px solid var(--line); color: var(--ink); font-weight: 600; text-decoration: none; }
-.ghost:hover { border-color: var(--ink-soft); }
+.store { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: var(--bg); text-decoration: none; padding: 14px 24px; border-radius: 999px; font-weight: 700; font-size: 1rem; min-height: 52px; transition: transform .25s var(--ease); }
+.store:hover { transform: scale(1.03); }
+.store:active { transform: scale(.97); }
+.store svg { width: 22px; height: 22px; flex: none; }
+.ghost { display: inline-flex; align-items: center; min-height: 52px; padding: 14px 24px; border-radius: 999px; border: 1px solid var(--line); text-decoration: none; font-weight: 700; font-size: 1rem; }
+.ghost:hover { background: var(--tile); }
+
+/* header */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; height: var(--header); background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); border-bottom: 1px solid var(--line); }
+.top .wrap { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; text-decoration: none; font-size: 1.05rem; letter-spacing: -0.02em; min-height: 44px; }
+.brand img { width: 32px; border-radius: 8px; }
+.top nav { display: flex; gap: 26px; align-items: center; font-size: .92rem; font-weight: 500; }
+.top nav a { text-decoration: none; color: var(--soft); transition: color .2s; }
+.top nav a:hover, .top nav a[aria-current="page"] { color: var(--ink); }
+.top nav .get { display: inline-flex; align-items: center; min-height: 36px; background: var(--brand); color: #000; padding: 0 16px; border-radius: 999px; font-weight: 700; }
+.top nav .get:hover { color: #000; }
+
+/* The iPhone: one frame for every screen. Sizes follow --w; the Dynamic Island sits exactly over the one in the
+   simulator screenshots, so screens with a black top and screens with a map top look the same. */
+.phone { --w: 300px; --s: calc(var(--w) * .93); position: relative; width: var(--w); flex: none; padding: calc(var(--w) * .035); border-radius: calc(var(--w) * .165); background: #0b0b0c; box-shadow: inset 0 0 0 1.5px #3b3b40, 0 0 0 1px #1c1c1f, 0 40px 80px -30px rgba(0, 0, 0, .5); }
+.phone .screen { position: relative; overflow: hidden; aspect-ratio: 1206 / 2622; border-radius: calc(var(--w) * .13); background: #000; }
+.phone .screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.phone .screen::after { content: ""; position: absolute; z-index: 5; left: 50%; top: calc(var(--s) * .033); width: calc(var(--s) * .318); height: calc(var(--s) * .094); transform: translateX(-50%); border-radius: 999px; background: #000; }
+
+/* ---------- Landing page ---------- */
+
+/* Hero: fills the first screen. One load sequence, then the phones fan open. */
+.hero { height: var(--screen); min-height: 540px; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(28px, 7svh, 84px); overflow: hidden; }
+.hero .icon { width: clamp(64px, 9svh, 84px); border-radius: 22%; margin: 0 auto clamp(16px, 3svh, 26px); box-shadow: 0 12px 30px -12px rgba(0, 0, 0, .45); }
+.hero h1 { font-size: clamp(2.9rem, min(8.4vw, 10svh), 6.8rem); max-width: 12ch; margin: 0 auto clamp(14px, 2.4svh, 22px); }
+.hero p { margin: 0 auto clamp(20px, 3.4svh, 32px); max-width: 44ch; color: var(--soft); font-size: clamp(1.05rem, 2svh, 1.22rem); }
+.hero .meta { margin-top: 14px; color: var(--soft); font-size: .92rem; }
+.fan { position: relative; flex: 1 1 0; min-height: 140px; width: 100%; margin-top: clamp(24px, 5svh, 64px); }
+.fan::after { content: ""; position: absolute; inset: auto 0 0; height: 30%; background: linear-gradient(transparent, var(--bg)); z-index: 3; }
+.fan .phone { --w: clamp(170px, min(25vw, 30svh), 310px); position: absolute; left: 50%; top: 0; margin-left: calc(var(--w) / -2); }
+.fan .middle { z-index: 2; }
+.fan .left { transform: translate(-64%, 9%) rotate(-9deg); }
+.fan .right { transform: translate(64%, 9%) rotate(9deg); }
+.motion .hero .rise-in { animation: riseIn 1s var(--ease) both; }
+.motion .hero .rise-in:nth-child(2) { animation-delay: .08s; }
+.motion .hero .rise-in:nth-child(3) { animation-delay: .16s; }
+.motion .hero .rise-in:nth-child(4) { animation-delay: .24s; }
+.motion .hero .rise-in:nth-child(5) { animation-delay: .32s; }
+.motion .fan .middle { animation: phoneUp 1.2s var(--ease) .25s both; }
+.motion .fan .left, .motion .fan .right { animation: fanOut 1.3s var(--ease) .45s both; }
+@keyframes riseIn { from { opacity: 0; transform: translateY(24px); } }
+@keyframes phoneUp { from { opacity: 0; transform: translateY(30%); } }
+@keyframes fanOut { from { opacity: 0; transform: translate(0, 30%) rotate(0); } }
+
+/* How it works. Without motion it is a plain list beside the first screen. With motion (main.js) the section pins
+   for one screen and scrolling moves through the four steps: the step's text slides out up and the next slides in
+   from below, while the next app screen slides up inside the phone. */
+.story { position: relative; }
+.story-pin { min-height: var(--screen); display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(32px, 6vw, 96px); padding-block: 48px; }
+.story-copy { display: grid; gap: 28px; align-content: center; }
+.story-copy h2 { font-size: clamp(2.4rem, 5vw, 4.2rem); }
+.below { display: grid; gap: 28px; }
+.steps { display: grid; gap: 40px; }
+.step { display: grid; gap: 12px; max-width: 460px; }
+.step .count { font-weight: 800; color: var(--soft); font-size: 1rem; }
+.step h3 { font-size: clamp(1.9rem, 3.4vw, 3rem); }
+.step p { margin: 0; color: var(--soft); }
+.stage { display: grid; place-items: center; }
+.stage .phone { --w: clamp(220px, min(30vw, calc((var(--screen) - 120px) * .44)), 340px); }
+.dots { display: none; }
+
+.pinned .story-pin { height: var(--screen); min-height: 0; padding-block: 24px; }
+.pinned .steps { position: relative; display: block; height: 15rem; }
+.pinned .step { position: absolute; inset: 0 0 auto; }
+.pinned .step + .step { visibility: hidden; opacity: 0; }
+.pinned .dots { display: flex; gap: 8px; }
+.dots span { width: 8px; height: 8px; border-radius: 4px; background: var(--line); transition: width .35s var(--ease), background .35s; }
+.dots span.on { width: 28px; background: var(--ink); }
+
+/* Features: an Apple-style bento. Every tile shows its feature working. */
+.features { padding-block: clamp(80px, 12svh, 140px) 0; }
+.section-head { text-align: center; margin-bottom: clamp(32px, 6svh, 56px); }
+.section-head h2 { font-size: clamp(2.4rem, 5.4vw, 4.4rem); }
+.section-head p { color: var(--soft); margin: 16px auto 0; max-width: 48ch; }
+.bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 18px; }
+.tile { position: relative; overflow: hidden; border-radius: 30px; background: var(--tile); padding: 34px 34px 0; display: flex; flex-direction: column; min-width: 0; isolation: isolate; }
+.tile h3 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); }
+.tile .kicker { display: block; font-weight: 700; font-size: 1rem; color: var(--soft); margin-bottom: 8px; letter-spacing: -0.01em; }
+.tile p { margin: 10px 0 0; color: var(--soft); font-size: 1rem; max-width: 36ch; }
+.tile.dark { background: var(--night); color: #fff; }
+.tile.dark p, .tile.dark .kicker { color: #aab6c8; }
+.tile.sun { background: var(--brand); color: #000; }
+.tile.sun p, .tile.sun .kicker { color: #3a3a1a; }
+.span-8 { grid-column: span 8; } .span-6 { grid-column: span 6; } .span-4 { grid-column: span 4; } .span-12 { grid-column: span 12; }
+.tall { min-height: 600px; } .mid { min-height: 420px; } .short { min-height: 291px; }
+.stack { display: grid; gap: 18px; grid-template-rows: 1fr 1fr; }
+
+/* map tile: the route draws itself, then the five buddies drive along it */
+.tile.map { padding: 0; }
+.tile.map .copy { position: relative; z-index: 2; padding: 34px; background: linear-gradient(var(--night) 45%, transparent); }
+.tile.map svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+.route-draw { stroke-dasharray: 1400; stroke-dashoffset: 0; }
+.shown .route-draw { animation: draw 2.2s var(--ease) both; }
+@keyframes draw { from { stroke-dashoffset: 1400; } }
+.car-label { font: 700 12px var(--type); fill: #fff; }
+.eta { position: absolute; z-index: 2; right: 22px; bottom: 22px; background: #000; color: #fff; border-radius: 20px; padding: 14px 18px; display: grid; gap: 2px; min-width: 170px; }
+.eta strong { font-size: 1.8rem; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.eta span { font-size: .85rem; color: #aab6c8; }
+
+/* room code tile: the digits roll into place */
+.code { display: flex; gap: 6px; margin-top: auto; padding-block: 30px 18px; }
+.digit { --h: 66px; flex: 1; height: var(--h); overflow: hidden; background: #000; border-radius: 14px; }
+.digit > span { display: flex; flex-direction: column; transform: translateY(calc(var(--v) * var(--h) * -1)); }
+.digit i { font-style: normal; height: var(--h); flex: none; display: grid; place-items: center; color: var(--brand); font-weight: 800; font-size: 2rem; font-variant-numeric: tabular-nums; }
+.shown .digit > span { animation: roll 1.6s var(--ease) both; }
+.digit:nth-child(2) > span { animation-delay: .1s; } .digit:nth-child(3) > span { animation-delay: .2s; }
+.digit:nth-child(4) > span { animation-delay: .3s; } .digit:nth-child(5) > span { animation-delay: .4s; }
+.digit:nth-child(6) > span { animation-delay: .5s; }
+@keyframes roll { from { transform: translateY(0); } }
+.join-link { font-weight: 700; font-size: .95rem; margin-bottom: 30px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.join-link b { background: #000; color: var(--brand); padding: 4px 10px; border-radius: 999px; font-size: .85rem; }
+
+/* phone tiles: the phone rises from the bottom edge */
+.tile .phone { --w: min(76%, 290px); margin: auto auto calc(var(--w) * -1.05); transition: transform 1.2s var(--ease); }
+.motion .tile .phone { transform: translateY(14%); }
+.motion .tile.shown .phone { transform: none; }
+.alert-pill { position: absolute; z-index: 3; left: 50%; bottom: 30%; transform: translateX(-50%); background: #000; color: var(--brand); padding: 10px 16px; border-radius: 999px; font-weight: 700; font-size: .9rem; display: flex; gap: 8px; align-items: center; white-space: nowrap; box-shadow: 0 10px 30px rgba(0, 0, 0, .5); }
+.shown .alert-pill { animation: nudge 2.8s var(--ease) 1s infinite; }
+@keyframes nudge { 0%, 70%, 100% { transform: translateX(-50%) scale(1); } 78% { transform: translateX(-50%) scale(1.08); } 86% { transform: translateX(-50%) scale(.98); } }
+.wave { display: flex; gap: 4px; align-items: center; height: 18px; }
+.wave i { width: 3px; height: 40%; background: currentColor; border-radius: 2px; }
+.shown .wave i { animation: wave 1s ease-in-out infinite; }
+.wave i:nth-child(2) { animation-delay: .15s; } .wave i:nth-child(3) { animation-delay: .3s; } .wave i:nth-child(4) { animation-delay: .45s; }
+@keyframes wave { 50% { height: 100%; } }
+
+/* siri tile: the question, then the answer */
+.chat { margin-top: auto; padding-block: 22px 30px; display: grid; gap: 8px; }
+.chat span { background: var(--bg); border-radius: 18px; padding: 10px 14px; font-size: .92rem; font-weight: 600; width: fit-content; max-width: 100%; }
+.chat span.answer { justify-self: end; background: linear-gradient(135deg, #5b6cff, #c04dff); color: #fff; }
+.shown .chat span { animation: riseIn .7s var(--ease) both; }
+.shown .chat span.answer { animation-delay: .9s; }
+
+.big { font-size: clamp(5rem, 9vw, 7.5rem); font-weight: 800; letter-spacing: -0.06em; line-height: .9; margin-top: auto; padding-bottom: 30px; }
+
+/* carplay tile: the dashboard tilts flat */
+.tile.carplay { padding-bottom: 34px; text-align: center; align-items: center; }
+.tile.carplay p { margin-inline: auto; max-width: 52ch; }
+.dash { margin-top: 34px; width: 100%; background: #000; border-radius: 26px; padding: clamp(10px, 1.6vw, 18px); transition: transform 1.4s var(--ease); }
+.motion .dash { transform: perspective(1200px) rotateX(16deg) scale(.94); }
+.motion .shown .dash { transform: none; }
+.dash img { border-radius: 14px; width: 100%; }
+
+/* buddies tile: the crew hops in */
+.crew { display: flex; justify-content: center; align-items: flex-end; gap: 2%; margin-top: auto; padding-block: 30px 34px; }
+.crew img { width: 17%; }
+.crew img.leader { width: 21%; }
+.shown .crew img { animation: hop .7s var(--ease) both; }
+.crew img:nth-child(2) { animation-delay: .08s; } .crew img:nth-child(3) { animation-delay: .16s; }
+.crew img:nth-child(4) { animation-delay: .24s; } .crew img:nth-child(5) { animation-delay: .32s; }
+@keyframes hop { from { transform: translateY(60%) scale(.6); opacity: 0; } 70% { transform: translateY(-8%); } }
+
+.glyph { margin-top: auto; padding-bottom: 32px; }
+.glyph svg { width: 64px; height: 64px; }
+
+/* Tiles slide up as they scroll in, tied to scroll position where the browser supports it. */
+@supports (animation-timeline: view()) {
+  .motion .tile { animation: tileIn linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+  @keyframes tileIn { from { opacity: .3; transform: translateY(48px) scale(.97); } }
+}
+
+/* Questions: one full screen */
+.faq { min-height: var(--screen); display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 50px; align-content: center; align-items: start; padding-block: 80px; margin-top: clamp(40px, 8svh, 100px); }
+.faq h2 { font-size: clamp(2.2rem, 4.4vw, 3.4rem); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq details:first-of-type { border-top: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; padding-block: 22px; font-weight: 700; font-size: 1.12rem; display: flex; justify-content: space-between; gap: 20px; align-items: center; min-height: 44px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-size: 1.6rem; font-weight: 400; color: var(--soft); transition: transform .3s var(--ease); flex: none; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { margin: 0 0 22px; color: var(--soft); }
+
+/* Closing: the call to action and the footer share the last full screen. */
+.finale { min-height: 100svh; display: flex; flex-direction: column; }
+.closing { flex: 1; display: grid; place-content: center; justify-items: center; text-align: center; padding-block: clamp(32px, 8svh, 80px); }
+.closing .icon { width: clamp(64px, 11svh, 96px); border-radius: 22%; margin-bottom: clamp(16px, 3svh, 28px); }
+.closing h2 { font-size: clamp(2.6rem, 6vw, 5rem); margin-bottom: 18px; }
+.closing p { color: var(--soft); margin: 0 0 30px; max-width: 44ch; }
 
 /* footer */
-.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; align-items: center; padding-block: 28px 40px; color: var(--ink-soft); font-size: .95rem; border-top: 1px solid var(--line); }
+.footer { border-top: 1px solid var(--line); }
+.footer .wrap { padding-block: 26px calc(26px + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 26px; color: var(--soft); font-size: .9rem; }
 .footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 .footer a { text-decoration: none; }
 .footer a:hover { color: var(--ink); }
 
-/* ---------- landing page ---------- */
-
-/* story: text column + sticky phone */
-.story { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(24px, 5vw, 96px); }
-.lead { min-height: calc(100vh - 72px); display: flex; flex-direction: column; justify-content: center; padding-block: 48px 96px; }
-.lead h1 { font-size: clamp(3.2rem, 8vw, 7.4rem); max-width: 10ch; }
-.lead > p { color: var(--ink-soft); font-size: 1.25rem; margin: 26px 0 0; max-width: 30rem; }
-.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
-.facts { list-style: none; margin: 40px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.facts li { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); font-size: .92rem; color: var(--ink-soft); }
-.facts svg { width: 16px; height: 16px; color: var(--signal); }
-.split-line { padding-bottom: .08em; }
-
-/* How it works. Without JavaScript the four stops are a plain list. With it (`.motion`), the stops pin under the
-   header: the page scrolls four steps' worth while one stop shows at a time, and the phone beside them changes. */
-.steps { position: relative; }
-.steps-pin { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); }
-.rail { position: relative; justify-self: center; width: 6px; }
-.rail-track, .rail-fill { position: absolute; inset: 0; border-radius: 3px; background: var(--line); }
-.rail-fill { background: var(--signal); transform-origin: top; transform: scaleY(0); box-shadow: 0 0 18px rgba(247, 255, 0, .3); }
-.rail-pin { position: absolute; left: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--black); border: 4px solid var(--line); transition: border-color .3s, background-color .3s; }
-.rail-pin:nth-of-type(3) { top: 0; }
-.rail-pin:nth-of-type(4) { top: 33.333%; }
-.rail-pin:nth-of-type(5) { top: 66.666%; }
-.rail-pin:nth-of-type(6) { top: 100%; }
-.rail-pin.on { border-color: var(--signal); background: var(--signal); }
-.rail-car { position: absolute; left: 50%; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: var(--black); border: 3px solid var(--signal); display: grid; place-items: center; z-index: 1; will-change: transform; }
-.rail-car img { width: 30px; }
-.step-list { display: grid; gap: 96px; padding-block: 64px 120px; }
-.step { max-width: 34rem; }
-.step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 18px; }
-.step-head .count { color: var(--signal); font-weight: 700; font-size: 1rem; font-variant-numeric: tabular-nums; }
-.step-head .place { color: var(--ink-soft); font-weight: 500; font-size: 1rem; }
-.step h2 { font-size: clamp(2.2rem, 4.4vw, 3.6rem); }
-.step p { color: var(--ink-soft); margin: 20px 0 0; max-width: 30rem; }
-
-.motion .steps { height: 400vh; }
-.motion .steps-pin { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 73px); height: calc(100vh - 73px); align-items: center; }
-.motion .rail { height: min(46vh, 360px); }
-.motion .step-list { gap: 0; padding: 0; }
-.motion .step { grid-area: 1 / 1; align-self: center; }
-.motion .step:not(:first-child) { visibility: hidden; opacity: 0; }
-html:not(.motion) .rail { display: none; }
-
-/* The header is 73px tall; the sticky phone sits below it so it is never cut off. */
-.stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 73px); height: calc(100vh - 73px); display: grid; place-items: center; }
-.stage-inner { position: relative; display: grid; justify-items: center; gap: 22px; }
-.streets { position: absolute; inset: -18% -40%; z-index: -1; opacity: .7; }
-.phone { --screen-w: min(310px, 34vh, 24vw); --bezel: calc(var(--screen-w) * .034); position: relative; width: fit-content; padding: var(--bezel); border-radius: calc(var(--screen-w) * .125 + var(--bezel)); background: #000;
-  box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 calc(var(--bezel) * .7) #0d0d0d, 0 0 0 calc(var(--bezel) * .7 + 1px) #262626, 0 60px 120px -40px rgba(247, 255, 0, .22); will-change: transform; }
-/* The screen keeps the screenshots' exact shape, so nothing is cropped, and its corners follow an iPhone's. */
-.screen { position: relative; width: var(--screen-w); aspect-ratio: 1320 / 2868; border-radius: calc(var(--screen-w) * .125); overflow: hidden; background: var(--map); isolation: isolate; }
-.screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
-.screen img.current { opacity: 1; }
-.progress { display: flex; gap: 8px; }
-.progress span { width: 28px; height: 4px; border-radius: 2px; background: var(--line); transition: background-color .3s, width .3s; }
-.progress span.on { background: var(--signal); width: 44px; }
-
-/* Phones: one pinned panel under the header. The phone takes all the height the caption below it does not need,
-   and the stop's caption sits under it at full width. Nothing scrolls behind the phone. */
-@media (max-width: 860px) {
-  .story { --caption-h: 200px; --phone-h: clamp(240px, calc(100svh - 73px - 50px - var(--caption-h)), 540px); --stage-h: calc(var(--phone-h) + 50px);
-    grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .story > div:first-child { display: contents; }
-  .lead { order: 1; min-height: auto; padding-block: 40px 40px; }
-  .lead h1 { font-size: clamp(2.9rem, 13vw, 4.4rem); }
-  .lead > p { font-size: 1.1rem; }
-  .facts { margin-top: 28px; }
-  .stage { order: 2; top: calc(env(safe-area-inset-top, 0px) + 73px); z-index: 5; height: var(--stage-h); padding-block: 10px 12px; border-bottom: 1px solid var(--line);
-    margin-inline: calc(-1 * max(var(--gutter), env(safe-area-inset-left, 0px))); background: var(--black); align-content: start; }
-  .stage-inner { gap: 10px; }
-  .streets { display: none; }
-  .phone { --screen-w: min(calc(var(--phone-h) * 1320 / 2868), 64vw); --bezel: 6px;
-    box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 4px #0d0d0d, 0 0 0 5px #262626, 0 30px 60px -30px rgba(247, 255, 0, .25); }
-  .steps { order: 3; }
-  .steps-pin { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .rail { display: none; }
-  .step h2 { font-size: clamp(1.55rem, 6.6vw, 2.1rem); }
-  .step p { margin-top: 10px; font-size: .98rem; line-height: 1.5; }
-  .step-head { margin-bottom: 8px; }
-  .step-head .count, .step-head .place { font-size: .92rem; }
-  .motion .steps { height: 320svh; }
-  .motion .steps-pin { top: calc(env(safe-area-inset-top, 0px) + 73px + var(--stage-h)); height: calc(100svh - 73px - var(--stage-h)); align-items: start; padding-top: 18px; }
-  .motion .step { align-self: start; }
-}
-@media (max-width: 860px) and (max-height: 640px) {
-  .story { --caption-h: 196px; }
-  .step h2 { font-size: clamp(1.4rem, 6vw, 1.8rem); }
-  .step p { font-size: .92rem; }
-}
-
-/* CarPlay: the real CarPlay screen in a dashboard bezel */
-.carplay { padding-block: clamp(96px, 12vw, 160px); border-top: 1px solid var(--line); }
-.carplay-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; margin-bottom: 44px; }
-.carplay h2 { font-size: clamp(2.4rem, 5.4vw, 4.6rem); max-width: 13ch; }
-.carplay-head p { color: var(--ink-soft); max-width: 28rem; margin: 0; }
-.dash { margin: 0; border-radius: 34px; background: var(--panel); border: 1px solid var(--line); padding: clamp(8px, 1.2vw, 14px); }
-.dash img { width: 100%; border-radius: 24px; }
-@media (max-width: 640px) { .dash { border-radius: 22px; } .dash img { border-radius: 16px; } }
-
-/* section title above the feature cards */
-.more { padding-block: clamp(96px, 12vw, 160px) 40px; border-top: 1px solid var(--line); }
-.more h2 { font-size: clamp(2.4rem, 5.4vw, 4.6rem); }
-
-/* features */
-.features { padding-block: 0 clamp(96px, 12vw, 160px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-@media (max-width: 1100px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .features { grid-template-columns: minmax(0, 1fr); } }
-.features > div { padding: 26px; border-radius: 24px; background: var(--panel); border: 1px solid var(--line); }
-.features svg { width: 28px; height: 28px; color: var(--signal); margin-bottom: 18px; }
-.features h3 { font-size: 1.35rem; letter-spacing: -0.02em; }
-.features p { color: var(--ink-soft); margin: 8px 0 0; font-size: 1.02rem; }
-
-/* closing */
-.closing { position: relative; overflow: hidden; padding-block: clamp(96px, 14vw, 180px); display: grid; justify-items: center; text-align: center; gap: 24px; border-top: 1px solid var(--line); }
-.closing img.icon { width: 96px; border-radius: 24px; box-shadow: 0 20px 60px -20px rgba(247, 255, 0, .45); }
-.closing h2 { font-size: clamp(2.8rem, 8vw, 7rem); max-width: 12ch; }
-.closing p { color: var(--ink-soft); margin: 0; max-width: 30rem; }
-.crew { display: flex; justify-content: center; align-items: flex-end; gap: clamp(0px, 1vw, 16px); margin-top: 32px; max-width: 100%; }
-.crew img { width: clamp(58px, 10vw, 124px); height: auto; }
-.crew img.leader { width: clamp(72px, 12.5vw, 156px); }
-
 /* ---------- Support, Privacy and Join ---------- */
-
-.doc-head { padding-block: clamp(56px, 9vw, 120px) clamp(32px, 5vw, 56px); border-bottom: 1px solid var(--line); }
-.doc-head h1 { font-size: clamp(2.9rem, 9vw, 6rem); max-width: 14ch; }
-.doc-head p { color: var(--ink-soft); margin: 20px 0 0; max-width: 36rem; font-size: 1.2rem; }
-.doc { max-width: calc(44rem + 2 * var(--gutter)); padding-block: clamp(40px, 6vw, 72px) clamp(72px, 10vw, 120px); }
+.doc-head { padding-block: clamp(56px, 10vw, 120px) clamp(32px, 5vw, 56px); text-align: center; }
+.doc-head h1 { font-size: clamp(2.9rem, 8vw, 5.6rem); max-width: 14ch; margin-inline: auto; }
+.doc-head p { color: var(--soft); margin: 18px auto 0; max-width: 36rem; font-size: 1.2rem; }
+.doc { max-width: calc(44rem + 40px); padding-block: 0 clamp(72px, 10vw, 120px); }
 .doc h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.03em; margin: 56px 0 14px; }
 .doc h2:first-child { margin-top: 0; }
-.doc p, .doc li { color: var(--ink-soft); }
+.doc p, .doc li { color: var(--soft); }
 .doc strong { color: var(--ink); }
 .doc p { margin: 0 0 14px; }
-.doc ul { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; }
-.doc li::marker { color: var(--signal); }
-.doc a { color: var(--signal); text-underline-offset: 3px; }
+.doc ul { margin: 0 0 14px; padding-left: 1.2em; display: grid; gap: 10px; }
+.doc a { color: var(--ink); text-underline-offset: 3px; text-decoration-color: var(--brand); text-decoration-thickness: 3px; }
 .doc .lede { color: var(--ink); font-size: 1.3rem; line-height: 1.5; }
 .doc .store, .doc .ghost { text-decoration: none; }
-.doc .store { color: var(--black); }
-.doc .ghost { color: var(--ink); }
-.contact { margin: 40px 0; padding: 22px 24px; border-radius: 24px; background: var(--panel); border: 1px solid var(--line); }
-.contact:first-child { margin-top: 0; }
-.contact p { margin: 0; }
+.contact { background: var(--tile); border-radius: 24px; padding: 24px 28px; margin-bottom: 48px; }
+.contact p { margin: 0; color: var(--ink); }
+.doc-page main { min-height: calc(100svh - var(--header) - 80px); }
 
 /* Join: the room code from the invite link, in the same tiles as the landing page. */
-.digits { display: flex; gap: clamp(6px, 1.2vw, 12px); }
-.digits span { flex: 1; max-width: 92px; aspect-ratio: 3 / 4; display: grid; place-items: center; border-radius: 18px; background: var(--panel); border: 1px solid var(--line); font-size: clamp(2.2rem, 5.6vw, 4.4rem); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-.join .digits { max-width: 560px; margin-bottom: 36px; }
-.join .digits[hidden] { display: none; }
-.join .digits span { border-color: var(--signal); color: var(--signal); }
-.join-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+.join { text-align: center; }
+.join .digits { display: flex; gap: 8px; justify-content: center; max-width: 520px; margin: 0 auto 36px; }
+.join .digits span { flex: 1; background: #000; color: var(--brand); border-radius: 16px; padding: 14px 0; font-weight: 800; font-size: clamp(1.8rem, 7vw, 3rem); font-variant-numeric: tabular-nums; }
+.join-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; }
+.join-actions .store { background: var(--brand); color: #000; }
 
-@media (prefers-reduced-motion: reduce) {
-  .top, .rail-pin, .progress span { transition: none; }
+/* ---------- Narrow screens ---------- */
+@media (max-width: 900px) {
+  .top nav { gap: 18px; }
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .span-8, .span-12, .span-6 { grid-column: span 2; } .span-4 { grid-column: span 1; }
+  .stack { grid-column: span 2; grid-template-columns: 1fr 1fr; grid-template-rows: none; gap: 14px; }
+  .tall { min-height: 520px; }
+  .faq { grid-template-columns: 1fr; gap: 28px; }
 }
 
-/* Support, Privacy and Join have no scroll script, so their header keeps its hairline. */
-body:not(:has(.story)) .top { border-bottom-color: var(--line); }
+/* Phones get the same story: the section pins, the phone sits on top and the step's text changes below it. */
+@media (max-width: 760px) {
+  .story-pin { grid-template-columns: 1fr; gap: 24px; }
+  .story-copy h2 { font-size: 2.2rem; }
+  .stage { order: -1; }
+  .pinned .story-pin { grid-template-rows: auto minmax(0, 1fr) auto; align-items: stretch; gap: 16px; padding-block: 20px 24px; }
+  .pinned .story-copy { display: contents; }
+  .pinned .story-copy h2 { text-align: center; }
+  .pinned .stage { order: 0; min-height: 0; }
+  .pinned .stage .phone { --w: min(70vw, calc((var(--screen) - 330px) * .44)); }
+  .pinned .below { order: 1; justify-items: center; text-align: center; gap: 14px; }
+  .pinned .steps { height: 9.5rem; width: 100%; }
+  .pinned .step { justify-items: center; max-width: none; gap: 6px; }
+  .pinned .step h3 { font-size: 1.6rem; }
+  .pinned .step p { font-size: 1rem; max-width: 34ch; }
+  .pinned .step .count { display: none; }
+  .fan .phone { --w: min(46vw, 30svh); }
+  .fan .left { transform: translate(-58%, 10%) rotate(-9deg); }
+  .fan .right { transform: translate(58%, 10%) rotate(9deg); }
+}
+@media (max-width: 600px) {
+  .top nav a:not(.get) { display: none; }
+  .bento, .stack { grid-template-columns: 1fr; }
+  .span-4, .stack, .span-8, .span-12, .span-6 { grid-column: span 1; }
+  .tile { padding: 26px 26px 0; border-radius: 26px; }
+  .tile.map .copy { padding: 26px; }
+  .tall { min-height: 500px; } .mid { min-height: 0; } .short { min-height: 230px; }
+  .digit { --h: 54px; }
+  .digit i { font-size: 1.6rem; }
+  .eta { min-width: 0; right: 16px; bottom: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .tile .phone, .dash { transform: none; }
+}

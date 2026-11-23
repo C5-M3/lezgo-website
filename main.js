@@ -1,109 +1,142 @@
 // Landing page motion. GSAP is saved in /assets/vendor so the site loads no outside scripts. Scrolling stays the
-// browser's own. Without this file the page still works: the four stops are a plain list beside the phone.
+// browser's own. Without this file the page still works: the four steps are a plain list beside the phone, and
+// every tile shows its final state.
 (() => {
-  if (!window.gsap || !window.ScrollTrigger) return;
-  gsap.registerPlugin(ScrollTrigger, SplitText);
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Header gets a hairline once the page scrolls.
-  const header = document.querySelector(".top");
-  ScrollTrigger.create({ start: 8, end: "max", onToggle: self => header.classList.toggle("scrolled", self.isActive) });
+  // Each bento tile plays its own small animation the first time most of it is on screen.
+  const tiles = document.querySelectorAll(".tile");
+  if (reduce || !("IntersectionObserver" in window)) {
+    tiles.forEach(tile => tile.classList.add("shown"));
+  } else {
+    const watcher = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("shown");
+      watcher.unobserve(entry.target);
+    }), { threshold: 0.35 });
+    tiles.forEach(tile => watcher.observe(tile));
+  }
 
-  // How it works: the stops pin under the header and the page scrolls through them one at a time. The phone
-  // crossfades to the matching screen, the stop's text slides in, and the leader's car moves down the rail.
-  document.documentElement.classList.add("motion");
-  const screens = gsap.utils.toArray(".stage .screen img");
-  const progress = gsap.utils.toArray(".progress span");
-  const steps = gsap.utils.toArray(".step");
-  const pins = gsap.utils.toArray(".rail-pin");
-  const heroScreen = screens.findIndex(screen => screen.classList.contains("current"));
-  let shownScreen = heroScreen;
-  let shownStep = 0;
+  startMapTile();
+  if (!reduce && window.gsap && window.ScrollTrigger) startStory();
 
-  function showScreen(index) {
-    if (index === shownScreen) return;
-    const incoming = screens[index];
-    shownScreen = index;
-    screens.forEach(screen => {
-      screen.classList.toggle("current", screen === incoming);
-      gsap.set(screen, { zIndex: screen === incoming ? 2 : 1 });
+  // How it works: the section pins for one screen and the scroll moves through the four steps. Each change is
+  // tied to the scroll, so scrolling back plays it in reverse: the text slides out up and the next slides in from
+  // below, while the next app screen slides up inside the phone over the last one. Snapping lands on a step.
+  function startStory() {
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
+    const story = document.querySelector(".story");
+    const steps = gsap.utils.toArray(".step");
+    const screens = gsap.utils.toArray(".stage .screen img");
+    const dots = gsap.utils.toArray(".dots span");
+    const header = document.querySelector(".top");
+    story.classList.add("pinned");
+
+    gsap.set(steps.slice(1), { autoAlpha: 0, y: 40 });
+    gsap.set(screens.slice(1), { yPercent: 100 });
+
+    const hold = 0.5;
+    let shownDot = 0;
+    const timeline = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: {
+        trigger: story,
+        pin: ".story-pin",
+        start: () => `top ${header.offsetHeight}px`,
+        end: () => `+=${(steps.length - 1 + hold) * innerHeight}`,
+        scrub: 0.6,
+        invalidateOnRefresh: true,
+        // Directional snapping moves one step in the direction of the scroll, so a quick flick never skips a step.
+        snap: { snapTo: "labelsDirectional", inertia: false, duration: { min: 0.25, max: 0.6 }, delay: 0.1, ease: "power2.inOut" },
+        onUpdate: self => {
+          const index = Math.min(steps.length - 1, Math.round(self.progress * (steps.length - 1 + hold)));
+          if (index === shownDot) return;
+          shownDot = index;
+          dots.forEach((dot, i) => dot.classList.toggle("on", i === index));
+        }
+      }
     });
-    gsap.killTweensOf(screens);
-    gsap.to(screens.filter(screen => screen !== incoming), { autoAlpha: 0, duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.15, ease: "power1.out" });
-    gsap.fromTo(incoming, { autoAlpha: 0, scale: 1.04 }, { autoAlpha: 1, scale: 1, duration: reduce ? 0 : 0.6, ease: "power2.out" });
-  }
 
-  function showStep(index) {
-    pins.forEach((pin, i) => pin.classList.toggle("on", i <= index));
-    progress.forEach((bar, i) => bar.classList.toggle("on", i === index));
-    if (index === shownStep) return;
-    const direction = index > shownStep ? 1 : -1;
-    const outgoing = steps[shownStep];
-    const incoming = steps[index];
-    shownStep = index;
-    gsap.killTweensOf(steps);
-    gsap.to(steps.filter(step => step !== incoming), { autoAlpha: 0, y: -28 * direction, duration: reduce ? 0 : 0.3, ease: "power2.in" });
-    gsap.fromTo(incoming, { autoAlpha: 0, y: 36 * direction },
-      { autoAlpha: 1, y: 0, duration: reduce ? 0 : 0.55, delay: reduce || !outgoing ? 0 : 0.18, ease: "power3.out" });
-  }
-
-  const pinned = document.querySelector(".steps-pin");
-  const rail = document.querySelector(".rail");
-  const fill = document.querySelector(".rail-fill");
-  const car = document.querySelector(".rail-car");
-  // Each stop holds for a quarter of the scroll; the rail fills smoothly between them.
-  function followScroll(self) {
-    if (self.progress === 0 && self.scroll() < self.start) return;
-    const index = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
-    showStep(index);
-    showScreen(Number(steps[index].dataset.screen));
-    const along = Math.min(1, Math.max(0, (self.progress * steps.length - 0.5) / (steps.length - 1)));
-    gsap.set(fill, { scaleY: along });
-    gsap.set(car, { y: along * rail.offsetHeight });
-  }
-  ScrollTrigger.create({
-    trigger: ".steps",
-    start: () => `top ${parseFloat(getComputedStyle(pinned).top) || 0}px`,
-    end: "bottom bottom",
-    invalidateOnRefresh: true,
-    onUpdate: followScroll,
-    // A reload or a jump past the stops lands without an update, so sync on refresh too.
-    onRefresh: followScroll,
-    onLeaveBack: () => {
-      showScreen(heroScreen);
-      progress.forEach(bar => bar.classList.remove("on"));
+    timeline.addLabel("step0", 0);
+    for (let i = 1; i < steps.length; i += 1) {
+      const at = i - 1;
+      timeline
+        .to(steps[i - 1], { autoAlpha: 0, y: -40, duration: 0.3, ease: "power2.in" }, at + 0.15)
+        .fromTo(steps[i], { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.out" }, at + 0.5)
+        .fromTo(screens[i], { yPercent: 100 }, { yPercent: 0, duration: 0.7, ease: "power2.inOut" }, at + 0.15)
+        .to(screens[i - 1], { yPercent: -14, scale: 0.94, autoAlpha: 0.35, duration: 0.7, ease: "power2.inOut" }, at + 0.15)
+        .addLabel(`step${i}`, i);
     }
-  });
+    // A short hold so the last step rests on screen before the section scrolls away.
+    timeline.to({}, { duration: hold }).addLabel("end");
+  }
 
-  if (reduce) return;
+  // Live map tile: the five buddies drive along the route with the leader in front, and the arrival time counts
+  // down. With reduced motion they stay parked on the route.
+  function startMapTile() {
+    const route = document.getElementById("map-route");
+    const group = document.getElementById("map-cars");
+    const eta = document.getElementById("map-eta");
+    if (!route || !group) return;
+    const namespace = "http://www.w3.org/2000/svg";
+    const length = route.getTotalLength();
+    const crew = [["yellow", "Agus"], ["purple", "Budi"], ["pink", "Citra"], ["blue", "Dewi"], ["green", "Eko"]];
+    const cars = crew.map(([colour, name], i) => {
+      const size = i === 0 ? 62 : 52;
+      const car = document.createElementNS(namespace, "g");
+      const image = document.createElementNS(namespace, "image");
+      image.setAttribute("href", `/assets/mascot-${colour}.png`);
+      image.setAttribute("x", -size / 2);
+      image.setAttribute("y", -size / 2 - 8);
+      image.setAttribute("width", size);
+      image.setAttribute("height", size);
+      const tag = document.createElementNS(namespace, "rect");
+      tag.setAttribute("x", -26);
+      tag.setAttribute("y", size / 2 - 6);
+      tag.setAttribute("width", 52);
+      tag.setAttribute("height", 20);
+      tag.setAttribute("rx", 10);
+      tag.setAttribute("fill", i === 0 ? "#f7ff00" : "#000");
+      const label = document.createElementNS(namespace, "text");
+      label.setAttribute("class", "car-label");
+      label.setAttribute("x", 0);
+      label.setAttribute("y", size / 2 + 8);
+      label.setAttribute("text-anchor", "middle");
+      if (i === 0) label.style.fill = "#000";
+      label.textContent = name;
+      car.append(image, tag, label);
+      group.appendChild(car);
+      return { car, gap: i * 0.085 };
+    });
 
-  // The one orchestrated load: headline lines rise, then the phone springs up beside them.
-  document.fonts.ready.then(() => {
-    const split = SplitText.create(".lead h1", { type: "lines", mask: "lines", linesClass: "split-line" });
-    gsap.timeline({ defaults: { ease: "power4.out" } })
-      .from(split.lines, { yPercent: 105, duration: 1.1, stagger: 0.09 })
-      .from(".lead > p, .lead .actions, .lead .facts", { y: 24, autoAlpha: 0, duration: 0.8, stagger: 0.08 }, 0.35)
-      .from(".phone", { y: 90, rotation: 5, autoAlpha: 0, duration: 1.4, ease: "elastic.out(1, 0.7)" }, 0.25)
-      .from(".progress", { autoAlpha: 0, duration: 0.6 }, 0.9);
-  });
+    let progress = 0.6;
+    function place() {
+      cars.forEach(({ car, gap }) => {
+        const along = Math.max(0, Math.min(1, progress - gap));
+        const point = route.getPointAtLength(length * along);
+        car.setAttribute("transform", `translate(${point.x} ${point.y})`);
+      });
+      eta.textContent = `${Math.max(1, Math.round((1 - progress) * 21))} min`;
+    }
+    place();
+    if (reduce) return;
 
-  // Phone tips gently toward the pointer.
-  gsap.set(".stage-inner", { perspective: 1200 });
-  const tiltX = gsap.quickTo(".phone", "rotationY", { duration: 0.6, ease: "power3" });
-  const tiltY = gsap.quickTo(".phone", "rotationX", { duration: 0.6, ease: "power3" });
-  window.addEventListener("pointermove", event => {
-    if (event.pointerType !== "mouse") return;
-    tiltX((event.clientX / innerWidth - 0.5) * 10);
-    tiltY((event.clientY / innerHeight - 0.5) * -8);
-  });
-
-  // Buttons answer a press with a quick spring.
-  document.querySelectorAll(".store, .ghost, .get").forEach(button => {
-    button.addEventListener("pointerdown", () => gsap.to(button, { scale: 0.96, duration: 0.12, ease: "power2.out" }));
-    ["pointerup", "pointerleave"].forEach(type => button.addEventListener(type, () => gsap.to(button, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.4)" })));
-  });
-
-  // The crew hops up one after another when the closing comes into view.
-  gsap.from(".crew img", { y: 40, autoAlpha: 0, stagger: 0.08, duration: 0.8, ease: "back.out(2)",
-    scrollTrigger: { trigger: ".crew", start: "top 90%" } });
+    // Only drive while the tile is on screen.
+    let frame = 0;
+    let last = 0;
+    function drive(now) {
+      progress += (now - last) / 60000;
+      last = now;
+      if (progress > 0.97) progress = 0.45;
+      place();
+      frame = requestAnimationFrame(drive);
+    }
+    new IntersectionObserver(([entry]) => {
+      cancelAnimationFrame(frame);
+      if (!entry.isIntersecting) return;
+      last = performance.now();
+      frame = requestAnimationFrame(drive);
+    }).observe(route.closest(".tile"));
+  }
 })();
