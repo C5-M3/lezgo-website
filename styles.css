@@ -86,10 +86,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .step h2 { font-size: clamp(2.2rem, 4.6vw, 3.8rem); }
 .step p { color: var(--ink-soft); margin: 20px 0 0; max-width: 30rem; }
 
-.stage { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
+/* The header is 73px tall; the sticky phone sits below it so it is never cut off. */
+.stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 73px); height: calc(100vh - 73px); display: grid; place-items: center; }
 .stage-inner { position: relative; display: grid; justify-items: center; gap: 22px; }
 .streets { position: absolute; inset: -18% -40%; z-index: -1; opacity: .7; }
-.phone { position: relative; width: min(320px, 38vh, 26vw); aspect-ratio: 506 / 1100; border-radius: 50px; padding: 10px; background: #000; box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 7px #0d0d0d, 0 0 0 8px #262626, 0 60px 120px -40px rgba(247, 255, 0, .22); will-change: transform; }
+.phone { position: relative; width: min(320px, 34vh, 26vw); aspect-ratio: 506 / 1100; border-radius: 50px; padding: 10px; background: #000; box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 7px #0d0d0d, 0 0 0 8px #262626, 0 60px 120px -40px rgba(247, 255, 0, .22); will-change: transform; }
 .screen { position: relative; width: 100%; height: 100%; border-radius: 40px; overflow: hidden; background: var(--map); }
 .screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; clip-path: inset(100% 0 0 0); }
 .screen img.current { clip-path: inset(0 0 0 0); }
@@ -97,19 +98,23 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .progress span { width: 28px; height: 4px; border-radius: 2px; background: var(--line); transition: background-color .3s, width .3s; }
 .progress span.on { background: var(--signal); width: 44px; }
 
-.inline-phone { display: none; }
-
-/* Phones: no sticky phone (it would cover the text). Each stop shows its own screen under its words,
-   and the yellow route still fills down the left with the leader's car on its tip. */
+/* Phones: the phone pins under the header on a solid black panel with a hairline edge. The stops scroll up
+   underneath, so text is hidden by the panel instead of showing through the phone. */
 @media (max-width: 860px) {
   .story { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .stage { display: none; }
-  .lead { min-height: auto; padding-block: 40px 56px; }
+  .story > div:first-child { display: contents; }
+  .lead { order: 1; min-height: auto; padding-block: 40px 40px; }
   .lead h1 { font-size: clamp(2.9rem, 13vw, 4.4rem); }
   .lead > p { font-size: 1.1rem; }
   .facts { margin-top: 28px; }
-  .steps { padding-left: 48px; }
-  .step { min-height: auto; justify-content: flex-start; padding-block: 32px 56px; }
+  .stage { order: 2; top: calc(env(safe-area-inset-top, 0px) + 73px); z-index: 5; height: auto; padding-block: 16px 14px; border-bottom: 1px solid var(--line);
+    margin-inline: calc(-1 * max(var(--gutter), env(safe-area-inset-left, 0px))); background: var(--black); }
+  .stage-inner { gap: 12px; }
+  .streets { display: none; }
+  .phone { width: calc(min(40svh, 380px) * 506 / 1100); border-radius: 32px; padding: 6px; box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 5px #0d0d0d, 0 0 0 6px #262626; }
+  .screen { border-radius: 27px; }
+  .steps { order: 3; padding-left: 48px; }
+  .step { min-height: 58svh; justify-content: flex-start; padding-block: 48px 40px; }
   .step h2 { font-size: clamp(1.9rem, 8.4vw, 2.6rem); }
   .step p { margin-top: 12px; font-size: 1.02rem; }
   .step-head { margin-bottom: 10px; }
@@ -117,9 +122,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .route { left: 12px; }
   .route-car { left: 15px; width: 40px; height: 40px; margin: -20px 0 0 -20px; }
   .route-car img { width: 27px; }
-  .inline-phone { display: block; margin: 28px 0 0; width: min(240px, 100%); aspect-ratio: 506 / 1100; border-radius: 36px; padding: 7px; background: #000; box-shadow: 0 0 0 1px #2c2c2c, 0 0 0 6px #0d0d0d, 0 0 0 7px #262626; }
-  .inline-phone img { width: 100%; height: 100%; object-fit: cover; border-radius: 29px; }
 }
+@media (max-width: 860px) and (max-height: 700px) { .phone { width: calc(34svh * 506 / 1100); } .step { min-height: 64svh; } }
 
 /* room code */
 .code { padding-block: clamp(96px, 12vw, 160px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; border-top: 1px solid var(--line); }
@@ -155,13 +159,22 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .hear-phone { display: none; }
 }
 
+/* CarPlay: the real CarPlay screen in a dashboard bezel */
+.carplay { padding-block: clamp(96px, 12vw, 160px); border-top: 1px solid var(--line); }
+.carplay-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; margin-bottom: 44px; }
+.carplay h2 { font-size: clamp(2.4rem, 5.4vw, 4.6rem); max-width: 13ch; }
+.carplay-head p { color: var(--ink-soft); max-width: 28rem; margin: 0; }
+.dash { margin: 0; border-radius: 34px; background: var(--panel); border: 1px solid var(--line); padding: clamp(8px, 1.2vw, 14px); }
+.dash img { width: 100%; border-radius: 24px; }
+@media (max-width: 640px) { .dash { border-radius: 22px; } .dash img { border-radius: 16px; } }
+
 /* section title above the feature cards */
 .more { padding-block: clamp(96px, 12vw, 160px) 40px; border-top: 1px solid var(--line); }
 .more h2 { font-size: clamp(2.4rem, 5.4vw, 4.6rem); }
 
 /* features */
-.features { padding-block: 0 clamp(96px, 12vw, 160px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-@media (max-width: 960px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.features { padding-block: 0 clamp(96px, 12vw, 160px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1100px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .features { grid-template-columns: minmax(0, 1fr); } }
 .features > div { padding: 26px; border-radius: 24px; background: var(--panel); border: 1px solid var(--line); }
 .features svg { width: 28px; height: 28px; color: var(--signal); margin-bottom: 18px; }

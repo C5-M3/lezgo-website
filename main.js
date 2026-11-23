@@ -11,7 +11,7 @@
   ScrollTrigger.create({ start: 8, end: "max", onToggle: self => header.classList.toggle("scrolled", self.isActive) });
 
   // Sticky phone: each stop wipes its screen into the phone; the progress bar under it follows.
-  const screens = gsap.utils.toArray(".screen img");
+  const screens = gsap.utils.toArray(".stage .screen img");
   const progress = gsap.utils.toArray(".progress span");
   let current = 2;
   function showScreen(index) {
@@ -49,13 +49,8 @@
   }
   const layouts = gsap.matchMedia();
   layouts.add("(min-width: 861px)", () => storyTriggers("55%"));
-  layouts.add("(max-width: 860px)", () => {
-    storyTriggers("70%");
-    // On phones each stop has its own screen; it rises into place as the stop arrives.
-    if (reduce) return;
-    gsap.utils.toArray(".inline-phone").forEach(phone => gsap.from(phone, { y: 60, autoAlpha: 0, rotation: 3, duration: 0.9, ease: "back.out(1.4)",
-      scrollTrigger: { trigger: phone, start: "top 92%" } }));
-  });
+  // On phones the sticky phone fills the top of the screen, so a stop counts once it is lower down.
+  layouts.add("(max-width: 860px)", () => storyTriggers("75%"));
 
   // Room code: digits flicker through numbers and lock in, left to right.
   const digits = gsap.utils.toArray(".code .digits span");
