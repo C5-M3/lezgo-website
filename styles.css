@@ -121,7 +121,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .section-head h2 { font-size: clamp(2.4rem, 5.4vw, 4.4rem); }
 .section-head p { color: var(--soft); margin: 16px auto 0; max-width: 48ch; }
 .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 18px; }
-.tile { position: relative; overflow: hidden; border-radius: 30px; background: var(--tile); padding: 34px 34px 0; display: flex; flex-direction: column; min-width: 0; isolation: isolate; }
+.tile { position: relative; overflow: hidden; border-radius: 30px; background: var(--tile); padding: 34px 34px 0; display: flex; flex-direction: column; min-width: 0; isolation: isolate; container-type: inline-size; }
 .tile h3 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); }
 .tile .kicker { display: block; font-weight: 700; font-size: 1rem; color: var(--soft); margin-bottom: 8px; letter-spacing: -0.01em; }
 .tile p { margin: 10px 0 0; color: var(--soft); font-size: 1rem; max-width: 36ch; }
@@ -158,8 +158,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .join-link { font-weight: 700; font-size: .95rem; margin-bottom: 30px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .join-link b { background: #000; color: var(--brand); padding: 4px 10px; border-radius: 999px; font-size: .85rem; }
 
-/* phone tiles: the phone rises from the bottom edge */
-.tile .phone { --w: min(76%, 290px); margin: auto auto calc(var(--w) * -1.05); transition: transform 1.2s var(--ease); }
+/* phone tiles: the phone rises from the bottom edge. Its width is in cqi, not %: a % inside --w would make the
+   island height and the corner radii resolve against other sizes and stretch them. */
+.tile .phone { --w: min(76cqi, 290px); margin: auto auto calc(var(--w) * -1.05); transition: transform 1.2s var(--ease); }
 .motion .tile .phone { transform: translateY(14%); }
 .motion .tile.shown .phone { transform: none; }
 /* spoken alerts tile: what Lezgo says, beside the text instead of over the phone, which already shows the banner */
